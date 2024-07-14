@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('is_admin')->default(0)->comment('0 -> User , 1 -> Admin');
+            $table->string('country_code')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('currency')->default('pkr')->comment('PKR Or USD Currency');
+            $table->integer('is_verified')->default(0)->comment('0 -> Unverified , 1 -> Verified');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

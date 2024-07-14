@@ -9174,6 +9174,14 @@ button.bg-dark:focus {
 .text-center {
   text-align: center !important;
 }
+/*  Custom css start */
+.iti{
+    width: 100%;
+}
+.error-message{
+    color: red;
+    font-size: 15px;
+}
 
 @media (min-width: 576px) {
   .text-sm-left {
