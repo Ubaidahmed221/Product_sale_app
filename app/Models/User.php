@@ -26,6 +26,8 @@ class User extends Authenticatable
         'phone_number',
         'currency',
         'is_verified',
+        'verification_token',
+        'token_expires_at'
     ];
 
     /**
