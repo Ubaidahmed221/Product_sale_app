@@ -446,6 +446,13 @@ pre {
   max-height: 340px;
   overflow-y: scroll; }
 
+  /* custome css start */
+  .error-message{
+    font-size: 15px;
+    color: red;
+  }
+  /* custome css end */
+
 .container {
   width: 100%;
   padding-right: 15px;
