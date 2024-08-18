@@ -53,7 +53,8 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
 
     // menu Route
     Route::get('/admin/menus',[MenuController::class,'index'] )->name('admin.menus');
-    Route::post('/app-menu-create',[MenuController::class,'store'] )->name('admin.menus.store');
+    Route::post('/admin-menu-create',[MenuController::class,'store'] )->name('admin.menus.store');
+    Route::delete('/admin-menu-destory',[MenuController::class,'destory'] )->name('admin.menus.destory');
 
 
 
