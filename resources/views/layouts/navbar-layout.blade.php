@@ -37,21 +37,29 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="index.html" class="nav-item nav-link">Home</a>
-                        <a href="shop.html" class="nav-item nav-link active">Shop</a>
-                        <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
+                        @foreach (getMenu('main') as $main)
+                        @if ($main->children->isNotEmpty())
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                            <a href="{{ $main->full_url }}" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ $main->name }}</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                @foreach ($main->children as $child)
+                                <a href="{{ $child->full_name }}" class="dropdown-item">{{ $child->name }}</a>
+
+                                @endforeach
                             </div>
                         </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
-                    </div>
+                        @else
+                        <a href="{{ $main->full_url }}" class="nav-item nav-link">{{ $main->name }}</a>
+
+                        @endif
+
+                        @endforeach
+
+
+                     </div>
                     <div class="navbar-nav ml-auto py-0">
-                        <a href="" class="nav-item nav-link">Login</a>
-                        <a href="" class="nav-item nav-link">Register</a>
+                        <a href="{{ route('loginView') }}" class="nav-item nav-link">Login</a>
+                        <a href="{{ route('registerView') }}" class="nav-item nav-link">Register</a>
                     </div>
                 </div>
             </nav>

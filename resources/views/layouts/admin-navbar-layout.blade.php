@@ -11,6 +11,9 @@
       <li>
           <a href="{{ route('admin.menus') }}"><span class="fa fa-bars mr-3"></span>Menus </a>
       </li>
+      <li>
+          <a href="{{ route('admin.categories') }}"><span class="fa fa-list-alt mr-3"></span>Categories </a>
+      </li>
 
     </ul>
 

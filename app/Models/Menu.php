@@ -15,4 +15,16 @@ class Menu extends Model
         'position',
         'parent_id'
     ];
+
+    public function children(){
+        return $this->hasMany(Menu::class,'parent_id');
+    }
+
+    public function getFullUrlAttribute(){
+        if($this->is_external == 1){
+          return   $this->url;
+
+        }
+        return  url($this->url);
+    }
 }

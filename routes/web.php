@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AppController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,12 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
     Route::get('/admin/menus',[MenuController::class,'index'] )->name('admin.menus');
     Route::post('/admin-menu-create',[MenuController::class,'store'] )->name('admin.menus.store');
     Route::delete('/admin-menu-destory',[MenuController::class,'destory'] )->name('admin.menus.destory');
+    Route::put('/admin-menu-update',[MenuController::class,'update'] )->name('admin.menus.update');
+    
+    // category route
+    Route::get('/admin/categories',[CategoryController::class,'index'] )->name('admin.categories');
+    Route::post('/admin-category-create',[CategoryController::class,'store'] )->name('admin.category.store');
+
 
 
 
