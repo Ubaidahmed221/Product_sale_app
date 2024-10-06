@@ -11,7 +11,9 @@ class CategoryController extends Controller
     public function index(){
         try{
          $category = category::whereNull('parent_id')->get();
-            return view('admin.categories',compact('category'));
+      $allcategory =   category::with('parent')->paginate(5);
+    // $allcategory = category::paginate(5);
+            return view('admin.categories',compact(['category','allcategory']));
         }catch(\Exception $e){
             return abort(404,"something went wrong");
         }
@@ -28,13 +30,54 @@ class CategoryController extends Controller
             'name' => $request->category_name,
             'parent_id' => $request->parent_id
          ]);
-           
+
             return response()->json([
                 'success' => true,
                 'msg' => 'category created Successfully'
             ]);
 
         }catch(\Exception $e){
+            return response()->json([
+                'success' => false,
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function update(Request $request){
+        try{
+
+            category::where('id',$request->id)->update([
+                'name' => $request->category_name,
+              'parent_id' => $request->parent_id,
+
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Category Update   Successfully'
+            ]);
+
+        }
+        catch(\Exception $e){
+            return response()->json([
+                'success' => false,
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function destory(Request $request){
+        try{
+            category::where('id',$request->id)->orWhere('parent_id',$request->id)->delete();
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Category Delete Successfully'
+            ]);
+
+        }
+        catch(\Exception $e){
             return response()->json([
                 'success' => false,
                 'msg' => $e->getMessage()

@@ -57,10 +57,12 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
     Route::post('/admin-menu-create',[MenuController::class,'store'] )->name('admin.menus.store');
     Route::delete('/admin-menu-destory',[MenuController::class,'destory'] )->name('admin.menus.destory');
     Route::put('/admin-menu-update',[MenuController::class,'update'] )->name('admin.menus.update');
-    
+
     // category route
     Route::get('/admin/categories',[CategoryController::class,'index'] )->name('admin.categories');
     Route::post('/admin-category-create',[CategoryController::class,'store'] )->name('admin.category.store');
+    Route::delete('/admin-category-destory',[CategoryController::class,'destory'] )->name('admin.category.destory');
+    Route::put('/admin-Category-update',[CategoryController::class,'update'] )->name('admin.category.update');
 
 
 
