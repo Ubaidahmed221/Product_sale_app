@@ -2,6 +2,8 @@
 
 use App\Models\AppData;
 use App\Models\Menu;
+use App\Models\category;
+
 
 function getAppData($select){
 
@@ -26,6 +28,17 @@ function getAppData($select){
 
     }
 
+ }
+
+ function getAllCategory(){
+    try{
+      $getAllCategory =  category::whereNull('parent_id')->with('children')->get();
+        return  $getAllCategory;
+    }
+    catch(\Exceptio $e){
+        return [];
+
+    }
  }
 
 ?>
