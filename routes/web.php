@@ -3,6 +3,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\VerificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AppController;
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -64,6 +65,10 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
     Route::delete('/admin-category-destory',[CategoryController::class,'destory'] )->name('admin.category.destory');
     Route::put('/admin-Category-update',[CategoryController::class,'update'] )->name('admin.category.update');
 
+
+    // Banners
+    Route::get('/admin/banners',[BannerController::class,'index'] )->name('admin.banners');
+    Route::post('/admin-banner-create',[BannerController::class,'store'] )->name('admin.banner.store');
 
 
 
