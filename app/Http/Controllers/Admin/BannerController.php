@@ -54,4 +54,64 @@ class BannerController extends Controller
             ]);
         }
     }
+
+    public function update(Request $request){
+        try{
+            $request->validate([
+                'id' => 'required',
+                'image' => 'nullable|mimes:jpg,png|max:5120',
+                'heading' => 'required'
+            ]);
+
+            $data = [
+                'paragraph' => $request->paragraph,
+                'heading' => $request->heading,
+                'btn_text' => $request->btn_text,
+                'link' => $request->link,
+                'status' => $request->status
+            ];
+
+            $filename = '';
+            if($request->hasFile('image')){
+                $file = $request->file('image');
+               $filename =  time().'_'.$file->getClientOriginalName();
+              $distinationPath =  public_path('uploads');
+                $file->move($distinationPath,$filename);
+
+                $filename = 'uploads/'.$filename;
+                $data['image'] = $filename;
+            }
+            Banner::where('id',$request->id)->update($data);
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Banner Update   Successfully'
+            ]);
+
+        }
+        catch(\Exception $e){
+            return response()->json([
+                'success' => false,
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function destory(Request $request){
+        try{
+            Banner::where('id',$request->id)->delete();
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Banner Delete Successfully'
+            ]);
+
+        }
+        catch(\Exception $e){
+            return response()->json([
+                'success' => false,
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
 }

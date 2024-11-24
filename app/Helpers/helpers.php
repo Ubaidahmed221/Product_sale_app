@@ -3,6 +3,7 @@
 use App\Models\AppData;
 use App\Models\Menu;
 use App\Models\category;
+use App\Models\Banner;
 
 
 function getAppData($select){
@@ -34,6 +35,16 @@ function getAppData($select){
     try{
       $getAllCategory =  category::whereNull('parent_id')->with('children')->get();
         return  $getAllCategory;
+    }
+    catch(\Exceptio $e){
+        return [];
+
+    }
+ }
+ function getbanners(){
+    try{
+      $getbanner =  Banner::where('status',1)->get();
+        return  $getbanner;
     }
     catch(\Exceptio $e){
         return [];

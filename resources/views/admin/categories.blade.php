@@ -25,8 +25,8 @@
                 <td>{{ $categories->parent?$categories->parent->name: '-' }}</td>
 
                 <td>
-                    <button class="btn btn-danger deletebtn" data-toggle="modal" data-target="#deleteCategoryModel" data-id="{{ $categories->id }}" >Delete</button>
                     <button class="btn btn-primary editbtn" data-toggle="modal" data-target="#UpdateCategoryModel" data-obj="{{ $categories }}" >Edit</button>
+                    <button class="btn btn-danger deletebtn" data-toggle="modal" data-target="#deleteCategoryModel" data-id="{{ $categories->id }}" >Delete</button>
                 </td>
             </tr>
 
@@ -172,7 +172,7 @@
         $('.deletebtn').click(function(){
               var id =  $(this).data('id');
               $("#deleteCategoryid").val(id);
-            });
+         });
               $('#deletecategoryForm').submit(function(e) {
                 e.preventDefault();
                 $('.btnDelete').prop('disabled', true);

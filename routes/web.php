@@ -69,6 +69,8 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
     // Banners
     Route::get('/admin/banners',[BannerController::class,'index'] )->name('admin.banners');
     Route::post('/admin-banner-create',[BannerController::class,'store'] )->name('admin.banner.store');
+    Route::delete('/admin-banner-destory',[BannerController::class,'destory'] )->name('admin.banner.destory');
+    Route::post('/admin-banner-update',[BannerController::class,'update'] )->name('admin.banner.update');
 
 
 

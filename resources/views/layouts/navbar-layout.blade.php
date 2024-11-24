@@ -5,7 +5,7 @@
                 <h6 class="m-0">Categories</h6>
                 <i class="fa fa-angle-down text-dark"></i>
             </a>
-            <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
+            <nav class="{{ request()->is('/')?'show': '' }} collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
                 <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
                     @foreach (getAllCategory() as $category)
                     <div class="nav-item dropdown">
@@ -68,6 +68,42 @@
                     </div>
                 </div>
             </nav>
+            @if (request()->is('/'))
+            <div id="header-carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    @php
+                        $b_x = 0;
+                    @endphp
+                    @foreach (getbanners() as $banner)
+                    @php
+                    $b_x++;
+                @endphp
+                    <div class="carousel-item {{ $b_x == 1 ? 'active' : '' }}" style="height: 410px;">
+                        <img class="img-fluid" src="{{ asset($banner->image) }}" alt="Image">
+                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                            <div class="p-3" style="max-width: 700px;">
+                                <h4 class="text-light text-uppercase font-weight-medium mb-3">{{ $banner->paragraph }}</h4>
+                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">{{ $banner->heading }}</h3>
+                                <a href="{{ $banner->link }}" class="btn btn-light py-2 px-3">{{ $banner->btn_text }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+
+                </div>
+                <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
+                    <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                        <span class="carousel-control-prev-icon mb-n2"></span>
+                    </div>
+                </a>
+                <a class="carousel-control-next" href="#header-carousel" data-slide="next">
+                    <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                        <span class="carousel-control-next-icon mb-n2"></span>
+                    </div>
+                </a>
+            </div>
+
+            @endif
         </div>
     </div>
 </div>
