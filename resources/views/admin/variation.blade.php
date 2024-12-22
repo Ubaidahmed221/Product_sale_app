@@ -12,6 +12,8 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
+                <th scope="col">values</th>
+                <th scope="col">Add Value</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -20,12 +22,23 @@
                 <tr>
                     <th scope="row">{{ $variations->id }}</th>
                     <th scope="row">{{ $variations->name }}</th>
+                    <th>
+                        @foreach ($variations->values as $value)
+                          <button class="btn btn-info" >  {{$value->value}}
+                        <i class="fa fa-times deleteValue" data-id="{{$value->id}}" ></i>    
+                        </button>
+                        @endforeach
+                    </th>
+                    <th >
+                        <button class="btn btn-secondary addvariation" data-id="{{ $variations->id}}"  data-name="{{ $variations->name}}"
+                             data-toggle="modal" data-target="#addVariationModel" >Add Value</button>
+                    </th>
 
                     <td>
                         <button class="btn btn-primary editbtn" data-toggle="modal" data-target="#UpdateModel"
                             data-obj="{{ $variations }}">Edit</button>
                         <button class="btn btn-danger deletebtn" data-toggle="modal" data-target="#deleteModel"
-                            data-id="{{ $variations->id }}">Delete</button>
+                            data-obj="{{ $variations }}">Delete</button>
                     </td>
                 </tr>
             @endforeach
@@ -50,13 +63,44 @@
 
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" class="form-control" name="name" placeholder="enter Your variation">
+                            <input type="text" class="form-control" name="name" placeholder="enter Your variation" required >
                         </div>
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary createBtn">Create</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--Add Variation Modal -->
+    <div class="modal fade" id="addVariationModel" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="addVariationModelLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Add <span class="add-variation-name" ></span> value</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="" id="addvariationForm" >
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="variation_id" id="add-variation-id" />
+
+                        <div class="form-group">
+                            <label>Value</label>
+                            <input type="text" class="form-control" name="value" placeholder="enter Your value" required >
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary addvariationBtn">Create</button>
                     </div>
 
                 </form>
@@ -77,12 +121,12 @@
              </div>
              <form action="" id="updateForm" >
                  @csrf
-                 <input type="hidden" name="id" id="updateid">
+                 <input type="hidden" name="id" id="edit-id">
                  <div class="modal-body">
 
                      <div class="form-group">
                          <label>name</label>
-                         <input type="text" id="name" class="form-control" name="name" placeholder="enter Your Variation">
+                         <input type="text" id="edit-name" class="form-control" name="name" placeholder="enter Your Variation">
                      </div>
 
                  </div>
@@ -101,7 +145,7 @@
    <div class="modal-dialog modal-dialog-centered">
        <div class="modal-content">
            <div class="modal-header">
-               <h5 class="modal-title" id="staticBackdropLabel">Delete Bannner</h5>
+               <h5 class="modal-title" id="staticBackdropLabel">Delete Variation</h5>
                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                    <span aria-hidden="true">&times;</span>
                </button>
@@ -110,7 +154,7 @@
                @csrf
                <input type="hidden" name="id" id="deleteid">
                <div class="modal-body">
-                   <p>Are You Sure, You Want To Delete the Variation ?</p>
+                   <p>Are You Sure, You Want To Delete the  <b id="delete-name"></b> Variation</p>
                </div>
                <div class="modal-footer">
                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -151,11 +195,11 @@
 
             });
                // update variation working
-               $('.editbtn').click(function(){
+            $('.editbtn').click(function(){
              var data = $(this).data('obj');
              console.log(data);
              $('#updateid').val(data.id);
-             $('#name').val(data.name);
+             $('#edit-name').val(data.name);
 
             });
             $('#updateForm').submit(function(e) {
@@ -166,7 +210,7 @@
 
                 $.ajax({
                     url: "{{ route('admin.variation.update') }}",
-                    type: 'POST',
+                    type: 'PUT',
                     data: formData,
                     success: function(res) {
                         alert(res.msg);
@@ -182,8 +226,9 @@
             });
               // delete Variation working
               $('.deletebtn').click(function() {
-                var id = $(this).data('id');
-                $("#deleteid").val(id);
+                var obj = $(this).data('obj');
+                $("#deleteid").val(obj.id);
+                $("#delete-name").text(obj.name);
             });
             $('#deleteForm').submit(function(e) {
                 e.preventDefault();
@@ -205,7 +250,60 @@
                 });
 
             });
+            //  add variation Value working
+            $('.addvariation').click(function() {
+                $('#add-variation-id').val($(this).data('id'));
+                $('.add-variation-name').text($(this).data('name'));
 
+            });
+            $('#addvariationForm').submit(function(e) {
+                e.preventDefault();
+                $('.addvariationBtn').prop('disabled', true);
+
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: "{{ route('admin.variation.value.store') }}",
+                    type: 'POST',
+                    data: formData,
+                    success: function(res) {
+                        alert(res.msg);
+                        $('.addvariationBtn').prop('disabled', false);
+                        if (res.success) {
+                            location.reload();
+
+                        }
+
+                    }
+                });
+
+            });
+
+            $('.deleteValue').click(function () {
+                var id = $(this).data('id');
+                var confirmDelete = confirm("Are you sure you want to remove the value?");
+                var obj = $(this); 
+                if(confirmDelete){
+                    $.ajax({
+                    url: "{{ route('admin.variation.value.destory') }}",
+                    type: 'DELETE',
+                    data: {
+                        id: id,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(res) {
+                        alert(res.msg);
+                        $('.addvariationBtn').prop('disabled', false);
+                        if (res.success) {
+                            $(obj).parent().remove();
+
+                        }
+
+                    }
+                });
+
+                }
+            });
 
         });
     </script>

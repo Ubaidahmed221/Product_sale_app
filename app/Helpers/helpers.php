@@ -4,7 +4,7 @@ use App\Models\AppData;
 use App\Models\Menu;
 use App\Models\category;
 use App\Models\Banner;
-
+use App\Models\Variation;
 
 function getAppData($select){
 
@@ -24,7 +24,7 @@ function getAppData($select){
     try{
      $menus =  Menu::where('position',$position)->whereNull('parent_id')->orderBy('id')->get();
         return $menus;
-    }catch(\Exceptio $e){
+    }catch(\Exception $e){
         return [];
 
     }
@@ -36,7 +36,17 @@ function getAppData($select){
       $getAllCategory =  category::whereNull('parent_id')->with('children')->get();
         return  $getAllCategory;
     }
-    catch(\Exceptio $e){
+    catch(\Exception $e){
+        return [];
+
+    }
+ }
+ function getVariations(){
+    try{
+      $variations =  Variation::with('values')->get();
+        return  $variations;
+    }
+    catch(\Exception $e){
         return [];
 
     }
@@ -46,7 +56,7 @@ function getAppData($select){
       $getbanner =  Banner::where('status',1)->get();
         return  $getbanner;
     }
-    catch(\Exceptio $e){
+    catch(\Exception $e){
         return [];
 
     }

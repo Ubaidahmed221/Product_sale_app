@@ -8,6 +8,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\VariationController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,10 +74,16 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
     Route::delete('/admin-banner-destory',[BannerController::class,'destory'] )->name('admin.banner.destory');
     Route::post('/admin-banner-update',[BannerController::class,'update'] )->name('admin.banner.update');
 
-    // variation
+    // variation & variation Value
     Route::get('/admin/variation',[VariationController::class,'index'] )->name('admin.variation');
     Route::post('/admin-variation-create',[VariationController::class,'store'] )->name('admin.variation.store');
-    Route::post('/admin-variation-update',[VariationController::class,'update'] )->name('admin.variation.update');
+    Route::post('/admin-variation-value-create',[VariationController::class,'variationValuestore'] )->name('admin.variation.value.store');
+    Route::put('/admin-variation-update',[VariationController::class,'update'] )->name('admin.variation.update');
     Route::delete('/admin-variation-destory',[VariationController::class,'destory'] )->name('admin.variation.destory');
+    Route::delete('/admin-variation-value-destory',[VariationController::class,'variationValuedestory'] )->name('admin.variation.value.destory');
+
+    // Products
+    Route::get('/admin/products',[ProductController::class,'index'] )->name('admin.products');
+   
 
 });
