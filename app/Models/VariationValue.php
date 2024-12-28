@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class VariationValue extends Model
 {
     use HasFactory;
+    
+    protected $table = "variation_values";
+
     protected $fillable = ['variation_id','value'];
     
     public function variation(){

@@ -491,6 +491,31 @@ pre {
   .dropdown.open .dropdown-content{
     display: block;
   }
+  .admin-product-image{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .image-wrapper{
+    position: relative;
+    display: inline-block;
+
+  }
+  .remove-image{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+  }
   @media (min-width: 576px) {
     .container {
       max-width: 540px; } }

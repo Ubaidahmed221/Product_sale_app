@@ -6,9 +6,76 @@
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModel">
         Creat Product
     </button>
+    <table class="table table-striped mt-2">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">SKU</th>
+                <th scope="col">Title</th>
+                <th scope="col">Price (Rs) </th>
+                <th scope="col">Price ($) </th>
+                <th scope="col">Stock</th>
+                <th scope="col">Category</th>
+                <th scope="col">Variations </th>
+                <th scope="col">Images</th>
+                {{-- <th scope="col">Action</th> --}}
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($product as $products)
 
+            <tr>
+                <th scope="row">{{ $products->id }}</th>
+                <td>{{ $products->sku }}</td>
+                <td>{{ $products->title }}</td>
+                <td>{{ $products->pkr_price }}</td>
+                <td>{{ $products->usd_price }}</td>
+                <td>{{ $products->stock }}</td>
+                <td>
+                    @foreach ($products->categories as $index => $category)
+                        
+                    {{ $category->name }} @if ($index < $products->categories->count() - 1), @endif
+                    @endforeach
+                </td>
+                <td>
+                    @foreach ($products->productVariations as $index => $variation)
+                        
+                    {{ $variation->variationValue->value }} @if ($index < $products->productVariations->count() - 1), @endif
+                    @endforeach
+                </td>
+                <td>
+                    <a href="#" class="showProductImage" data-id="{{$products->id}}" data-toggle="modal" data-target="#imageModel" >See Images</a>
+                </td>
+                {{-- <td>
+                    <button class="btn btn-danger deletebtn" data-toggle="modal" data-target="#deleteMenuModel" data-id="{{ $menu->id }}" >Delete</button>
+                    <button class="btn btn-primary editbtn" data-toggle="modal" data-target="#UpdateMenuModel" data-obj="{{ $menu }}" >Edit</button>
+                </td> --}}
+            </tr>
 
-     <!-- Modal -->
+            @endforeach
+        </tbody>
+    </table>
+    {{ $product->links('pagination::bootstrap-5') }}
+
+    {{-- show images model --}}
+   
+     <div class="modal fade" id="imageModel" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="imageModelLabel">
+         <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title">Product Images </h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+             </div>
+          
+                 <div class="modal-body allProductImages">
+                    
+                </div>
+     </div>
+     </div>
+ </div>
+     <!-- add product Modal -->
      <div class="modal fade" id="createModel" data-backdrop="static" data-keyboard="false" tabindex="-1"
         aria-labelledby="createModelLabel" aria-hidden="true">
          <div class="modal-dialog modal-dialog-centered">
@@ -19,12 +86,12 @@
                      <span aria-hidden="true">&times;</span>
                  </button>
              </div>
-             <form action="" id="createForm" enctype="multipart/form-data" >
+             <form action="" id="addForm" enctype="multipart/form-data" >
                  @csrf
                  <div class="modal-body">
                      <div class="form-group">
                          <label>Image</label>
-                         <input type="file" class="form-control" name="images" required multiple accept=".jpg, .jpeg, .png" >
+                         <input type="file" class="form-control" name="images[]" required multiple accept=".jpg, .jpeg, .png" >
                      </div>
                      <div class="form-group">
                          <label>Title</label>
@@ -57,11 +124,11 @@
                         <div class="dropdown-btn" onclick="toggleDropdown()" >Select Option</div>
                         <div class="dropdown-content" >
                             @foreach (getAllCategory() as $category)
-                            <label><input type="checkbox" data-name="{{$category->name}}" value="{{$category->id}}" onchange="updateSelected()">{{$category->name}}
+                            <label><input type="checkbox" name="categories[]" data-name="{{$category->name}}" value="{{$category->id}}" onchange="updateSelected()">{{$category->name}}
                             </label>
                             @if ($category->children->isNotEmpty())
                                 @foreach ($category->children as  $childCategory)
-                                <label><input type="checkbox" data-name="{{$childCategory->name}}" value="{{$childCategory->id}}" onchange="updateSelected()">{{$childCategory->name}}
+                                <label><input type="checkbox" name="categories[]" data-name="{{$childCategory->name}}" value="{{$childCategory->id}}" onchange="updateSelected()">{{$childCategory->name}}
                                 </label>
                                 @endforeach
                             @endif
@@ -69,6 +136,7 @@
                     </div>
                     </div>
                   </div>
+                
                   {{-- <div class="form-group">
                       <label>Variation:</label>
                       @foreach (getVariations() as $variation)
@@ -88,6 +156,8 @@
                         
                     @endforeach
                   </div> --}}
+                  
+
                   <div class="form-group">
                     <label>Variation:</label>
                     @foreach (getVariations() as $variation)
@@ -113,13 +183,13 @@
                 </div>
                 
                   <div class="form-group">
-    <label>Description</label>
-    <textarea name="description" class="form-control" placeholder="Enter Description" cols="30" rows="10"></textarea>
-</div>
-                  <div class="form-group">
-    <label>Addition Information</label>
-    <textarea name="add_information" class="form-control" placeholder="Enter Additional Information" cols="30" rows="10"></textarea>
-</div>
+                    <label>Description</label>
+                    <textarea name="description" class="form-control" placeholder="Enter Description" cols="30" rows="10"></textarea>
+                </div>
+                                <div class="form-group">
+                    <label>Addition Information</label>
+                    <textarea name="add_information" class="form-control" placeholder="Enter Additional Information" cols="30" rows="10"></textarea>
+                </div>
                  <div class="modal-footer">
                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                      <button type="submit" class="btn btn-primary createBtn">Create</button>
@@ -157,6 +227,93 @@
 
             }
             
+        });
+
+        // add product code
+        $(document).ready(function() {
+            $('#addForm').submit(function(e) {
+                e.preventDefault();
+                $('.createBtn').prop('disabled', true);
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: "{{ route('admin.products.store') }}",
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        alert(res.msg);
+                        $('.createBtn').prop('disabled', false);
+                        if (res.success) {
+                            location.reload();
+
+                        }
+
+                    }
+                });
+
+            });
+            $('.showProductImage').click(function() {
+                var p_id = $(this).data('id');
+                $('.allProductImages').html(``);
+
+                $.ajax({
+                    url: "{{ route('admin.products.productImages') }}",
+                    type: 'GET',
+                    data: {
+                        id: p_id
+                    },
+                    success: function(res) {                       
+                        if (res.success) {
+                           var data = res.data;
+                           var html = `<div class="admin-product-image" >`;
+                           for(let i = 0; i < data.length; i++){
+                                html += `
+                                <div class="image-wrapper" data-id="`+data[i].id+`" >
+                                <img src="`+ data[i].url +`" width="100" height="100" />
+                                <span class="remove-image"  data-id="`+data[i].id+`" >&times;</span>
+                                 </div>
+                                `;
+
+                           }
+                           $('.allProductImages').html(html);
+
+                        }else{
+                            alert(res.msg);
+                        }
+
+                    }
+                });
+
+            });
+            $(document).on('click','.remove-image',function(){
+               var imageId = $(this).data('id');
+               var imageWrapper = $(this).closest('.image-wrapper');
+               if(confirm("Are You Sure you want to remove this image?")){
+                $.ajax({
+                    url: "{{ route('admin.products.productImagesRemove') }}",
+                    type: 'DELETE',
+                    data: {
+                        id: imageId,
+                        _token: "{{csrf_token()}}"
+                    },
+                    success: function(res) {                       
+                        if (res.success) {
+                            imageWrapper.remove();
+                            alert(res.msg);
+                        }
+                        else{
+                            alert(res.msg);
+                        }
+
+                    }
+                });
+               }
+
+            })
+
         });
 
 

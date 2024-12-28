@@ -84,6 +84,9 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
 
     // Products
     Route::get('/admin/products',[ProductController::class,'index'] )->name('admin.products');
+    Route::post('/admin-products-store',[ProductController::class,'store'] )->name('admin.products.store');
+    Route::get('/admin-product-image',[ProductController::class,'productImages'] )->name('admin.products.productImages');
+    Route::delete('/admin-product-image-remove',[ProductController::class,'productImagesRemove'] )->name('admin.products.productImagesRemove');
    
 
 });
