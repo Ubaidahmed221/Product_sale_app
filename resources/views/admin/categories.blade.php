@@ -11,6 +11,7 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
+                <th scope="col">Image</th>
                 <th scope="col">Category Name</th>
                 <th scope="col">Parent Category Name</th>
                 <th scope="col">Action</th>
@@ -21,6 +22,13 @@
 
             <tr>
                 <th scope="row">{{ $categories->id }}</th>
+                <td>
+                    @if ($categories->image)
+                    <img src="{{'/'.$categories->image}}" alt="{{$categories->name}}" width="50px" height="50px" >
+                        @else
+                        --
+                    @endif
+                </td>
                 <td>{{ $categories->name }}</td>
                 <td>{{ $categories->parent?$categories->parent->name: '-' }}</td>
 
@@ -49,6 +57,10 @@
              <form action="" id="addCategoryForm">
                  @csrf
                  <div class="modal-body">
+                    <div class="form-group">
+                        <label>Image</label>
+                        <input type="file" class="form-control" name="image" >
+                    </div>
                      <div class="form-group">
                          <label>Category Name</label>
                          <input type="text" class="form-control" name="category_name" placeholder="MenuName" required>
@@ -150,12 +162,14 @@
             e.preventDefault();
             $('.createBtn').prop('disabled', true);
 
-            var formData = $(this).serialize();
+            var formData = new FormData(this);
 
             $.ajax({
                 url: "{{ route('admin.category.store') }}",
                 type: 'POST',
                 data: formData,
+                processData: false,
+                contentType: false,
                 success: function(res) {
                     alert(res.msg);
                     $('.createBtn').prop('disabled', false);

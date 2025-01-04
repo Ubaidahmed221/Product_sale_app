@@ -22,13 +22,20 @@ class CategoryController extends Controller
     public function store(Request $request){
         try{
             $request->validate([
+                'image' => 'required|image|mimes:png,jpeg,svg,gif|max:5048',
                 'category_name' => 'required|unique:categories,name',
                 'parent_id' => 'nullable|exists:categories,id'
             ]);
-
+            if($request->hasFile('image')){
+                $image = $request->file('image');
+             $imageName =   time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('categories'),$imageName);
+            $imagepath = 'categories/'.$imageName;
+            }
         category::create([
             'name' => $request->category_name,
-            'parent_id' => $request->parent_id
+            'parent_id' => $request->parent_id,
+            'image' => $imagepath
          ]);
 
             return response()->json([
