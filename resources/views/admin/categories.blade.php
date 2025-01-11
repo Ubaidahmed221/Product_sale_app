@@ -101,6 +101,10 @@
 
                  @csrf
                  <div class="modal-body">
+                    <div class="form-group">
+                        <label>Image</label>
+                        <input type="file" class="form-control" name="image" >
+                    </div>
                      <div class="form-group">
                          <label>Category Name</label>
                          <input type="text" class="form-control" name="category_name" id="category_name" placeholder="MenuName" required>
@@ -222,12 +226,14 @@
                 e.preventDefault();
                 $('.UpdateBtn').prop('disabled', true);
 
-                var formData = $(this).serialize();
+                var formData = new FormData(this);
 
                 $.ajax({
                     url: "{{ route('admin.category.update') }}",
-                    type: 'PUT',
+                    type: 'POST',
                     data: formData,
+                processData: false,
+                contentType: false,
                     success: function(res) {
                         alert(res.msg);
                         $('.UpdateBtn').prop('disabled', false);

@@ -65,7 +65,7 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
     Route::get('/admin/categories',[CategoryController::class,'index'] )->name('admin.categories');
     Route::post('/admin-category-create',[CategoryController::class,'store'] )->name('admin.category.store');
     Route::delete('/admin-category-destory',[CategoryController::class,'destory'] )->name('admin.category.destory');
-    Route::put('/admin-Category-update',[CategoryController::class,'update'] )->name('admin.category.update');
+    Route::post('/admin-Category-update',[CategoryController::class,'update'] )->name('admin.category.update');
 
 
     // Banners
