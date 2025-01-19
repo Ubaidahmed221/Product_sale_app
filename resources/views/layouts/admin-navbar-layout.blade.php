@@ -22,6 +22,9 @@
       <li>
           <a href="{{ route('admin.products') }}"><span class="fa fa-list-alt mr-3"></span>Products </a>
       </li>
+      <li>
+          <a href="{{ route('admin.offers') }}"><span class="fa fa-gift mr-3"></span>Offers </a>
+      </li>
 
     </ul>
 

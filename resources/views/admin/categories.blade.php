@@ -212,7 +212,7 @@
 
             });
 
-    });
+
 
     // Edit Work
     $('.editbtn').click(function(){
@@ -246,7 +246,7 @@
                 });
 
             });
-
+        });
 </script>
 
 @endpush

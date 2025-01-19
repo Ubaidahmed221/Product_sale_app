@@ -61,5 +61,18 @@ function getAppData($select){
 
     }
  }
+ function getCategoryWithProductCount(){
+    try{
+      $categories =  category::withCount('products')
+      ->inRandomOrder()
+      ->take(6)
+      ->get();
+        return  $categories;
+    }
+    catch(\Exception $e){
+        return [];
+
+    }
+ }
 
 ?>
