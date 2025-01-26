@@ -57,6 +57,32 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('js/main.js') }} "></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.subscribe-form').submit(function(e){
+                e.preventDefault();
+
+                var formdata = $(this).serialize();
+                var obj = $(this);
+                $.ajax({
+                    url:"{{route('subscribe')}}",
+                    type: "POST",
+                    data: formdata,
+                    success: function(res){
+                        alert(res.message);
+                        if(res.success){
+                            $(obj)[0].reset();
+
+                        }
+
+                    }
+                })
+
+            })
+        })
+    </script>
+
     @stack('script')
 </body>
 

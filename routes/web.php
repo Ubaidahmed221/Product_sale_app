@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\VariationController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\SubscriberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,3 +102,5 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
  
 
 });
+Route::post('/subscribe',[SubscriberController::class,'store'] )->name('subscribe');
+

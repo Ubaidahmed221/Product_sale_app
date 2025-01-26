@@ -5,6 +5,7 @@ use App\Models\Menu;
 use App\Models\category;
 use App\Models\Banner;
 use App\Models\Variation;
+use App\Models\Offer;
 
 function getAppData($select){
 
@@ -74,5 +75,15 @@ function getAppData($select){
 
     }
  }
+ function getOffers(){
+  try{
+    $offer =  Offer::orderBy('id','DESC')
+    ->get();
+      return  $offer;
+  }
+  catch(\Exception $e){
+      return [];
 
+  }
+}
 ?>
