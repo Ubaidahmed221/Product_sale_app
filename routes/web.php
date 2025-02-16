@@ -93,14 +93,15 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
     Route::get('/admin-product-info',[ProductController::class,'productInfo'] )->name('admin.product.Info');
     Route::post('/admin-product-update',[ProductController::class,'update'] )->name('admin.product.update');
     Route::delete('/admin-product-variation-destory',[ProductController::class,'variationdestory'] )->name('admin.product.variation.destory');
-   
+
      // Offer
      Route::get('/admin/offers',[OfferController::class,'index'] )->name('admin.offers');
      Route::post('/admin-offer-create',[OfferController::class,'store'] )->name('admin.offer.store');
      Route::post('/admin-offer-update',[OfferController::class,'update'] )->name('admin.offer.update');
      Route::delete('/admin-offer-destory',[OfferController::class,'destory'] )->name('admin.offer.destory');
- 
+
 
 });
 Route::post('/subscribe',[SubscriberController::class,'store'] )->name('subscribe');
+Route::get('/unsubscribe/{token}',[SubscriberController::class,'unsubscribe'] )->name('unsubscribe');
 
