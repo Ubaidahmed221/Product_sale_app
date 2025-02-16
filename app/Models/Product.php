@@ -34,6 +34,9 @@ class Product extends Model
         return "{$prefix}-{$uniquePart}-{$timestamp}";
     }
 
+    public function firstImage(){
+        return $this->hasOne(ProductImage::class)->oldest();
+    }
     public function images(){
         return $this->hasMany(ProductImage::class);
     }

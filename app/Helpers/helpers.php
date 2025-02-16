@@ -6,6 +6,7 @@ use App\Models\category;
 use App\Models\Banner;
 use App\Models\Variation;
 use App\Models\Offer;
+use App\Models\Product;
 
 function getAppData($select){
 
@@ -86,4 +87,18 @@ function getAppData($select){
 
   }
 }
+function getJustArrivedProducts(){
+    try{
+     $product = Product::latest()
+     ->whereNull('deleted_at')
+     ->take(8)
+     ->with('firstImage')
+      ->get();
+        return  $product;
+    }
+    catch(\Exception $e){
+        return [];
+
+    }
+  }
 ?>
