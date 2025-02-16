@@ -48,4 +48,25 @@ class Product extends Model
     {
         return $this->hasMany(ProductVariation::class);
     }
+
+    public function variations(){
+        return $this->hasManyThrough(
+            Variation::class,
+            ProductVariation::class,
+            'product_id',
+            'id',
+            'id',
+            'variation_id'
+        );
+    }
+    public function variationValues(){
+        return $this->hasManyThrough(
+            VariationValue::class,
+            ProductVariation::class,
+            'product_id',
+            'id',
+            'id',
+            'variation_value_id'
+        );
+    }
 }
