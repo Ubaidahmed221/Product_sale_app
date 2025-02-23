@@ -63,8 +63,14 @@
 
                      </div>
                     <div class="navbar-nav ml-auto py-0">
+                        @if (auth()->check())
+
+                        <a href="#" class="nav-item nav-link logout-btn ">Logout</a>
+                        @else
+
                         <a href="{{ route('loginView') }}" class="nav-item nav-link">Login</a>
                         <a href="{{ route('registerView') }}" class="nav-item nav-link">Register</a>
+                        @endif
                     </div>
                 </div>
             </nav>

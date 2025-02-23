@@ -29,6 +29,34 @@
 
     <script src="{{ asset('js/admin-main.js') }} "></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+
+            // logout work
+            $('.logout-btn').click(function(){
+
+                $.ajax({
+                    url:"{{route('logout')}}",
+                    type: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(res){
+                        if(res.success){
+                          location.reload();
+
+                        }
+                        else{
+                            alert(res.message);
+                        }
+
+                    }
+                })
+
+            });
+        })
+    </script>
     @stack('script')
   </body>
 </html>

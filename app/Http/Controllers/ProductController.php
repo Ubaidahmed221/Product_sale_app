@@ -10,7 +10,9 @@ class ProductController extends Controller
     public function detail($encryptedstring){
         try{
             $id = Crypt::decrypt($encryptedstring);
-          $product =  Product::with(['images',
+          $product =  Product::withCount('review')
+          ->withAvg('review','rating')
+          ->with(['images',
           'productVariations.variation',
           'productVariations.variationValue'])
           ->where('id',$id)->first();
@@ -23,7 +25,7 @@ class ProductController extends Controller
 
             $variations[$variationName][] = $variationValue;
           }
-       
+
           return view('product.detail',compact(['product','variations']));
 
         }

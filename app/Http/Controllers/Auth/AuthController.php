@@ -222,5 +222,25 @@ class AuthController extends Controller
 
         }
     }
+    public function logout(Request $request){
+        try{
+
+            auth()->logout();
+            $request->session()->invalidate(); 
+            $request->session()->regenerateToken();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'logout successfully'
+            ]);
+        }
+        catch(\Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+
+        }
+    }
 
 }

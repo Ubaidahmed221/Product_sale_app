@@ -54,11 +54,17 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
     })->name('user.dashboard');
 
     Route::post('/review',[ReviewController::class,'store'] )->name('review.store');
+    Route::post('/logout',[AuthController::class,'logout'] )->name('logout');
 
 
 });
 
 Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
+
+    Route::get('/admin',function(){
+        return redirect()->route('admin.dashboard');
+    });
+
     Route::get('/admin/dashboard',[AppController::class,'index'] )->name('admin.dashboard');
     Route::post('update-app-data',[AppController::class,'UpdateAppData'] )->name('UpdateAppData');
 

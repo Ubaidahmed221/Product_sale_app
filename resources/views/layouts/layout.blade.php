@@ -79,6 +79,28 @@
                     }
                 })
 
+            });
+            // logout work
+            $('.logout-btn').click(function(){
+
+                $.ajax({
+                    url:"{{route('logout')}}",
+                    type: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(res){
+                        if(res.success){
+                          location.reload();
+
+                        }
+                        else{
+                            alert(res.message);
+                        }
+
+                    }
+                })
+
             })
         })
     </script>

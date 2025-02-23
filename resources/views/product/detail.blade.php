@@ -39,15 +39,31 @@
 
             <div class="col-lg-7 pb-5">
                 <h3 class="font-weight-semi-bold">{{ $product->title }}</h3>
+                {{-- <h3 class="font-weight-semi-bold">{{ $product->review_avg_rating }}</h3> --}}
                 <div class="d-flex mb-3">
                     <div class="text-primary mr-2">
+                        @php
+                        $avgrating = round($product->review_avg_rating * 2) / 2;
+                        $fullstar =  floor($avgrating);
+                        $halfstar = ( $avgrating - $fullstar) >= 0.5? 1: 0;
+                        $emptystar = 5 - ($fullstar + $halfstar);
+                        @endphp
+
+                        {{-- full star --}}
+                        @for ($i = 0; $i < $fullstar; $i++)
                         <small class="fas fa-star"></small>
-                        <small class="fas fa-star"></small>
-                        <small class="fas fa-star"></small>
+                        @endfor
+
+                        @if ($halfstar)
                         <small class="fas fa-star-half-alt"></small>
+                        @endif
+
+                        {{-- Empty star --}}
+                        @for ($i = 0; $i < $emptystar; $i++)
                         <small class="far fa-star"></small>
-                    </div>
-                    <small class="pt-1">(50 Reviews)</small>
+                        @endfor
+                </div>
+<small class="pt-1">({{ $product->review_count }} Reviews)</small>
                 </div>
                 <h3 class="font-weight-semi-bold mb-4">${{ $product->usd_price }}</h3>
                 <p class="mb-4">{{ $product->description }}</p>
@@ -107,7 +123,7 @@
                 <div class="nav nav-tabs justify-content-center border-secondary mb-4">
                     <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
                     <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
-                    <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
+                    <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews ({{ $product->review_count }} )</a>
                 </div>
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="tab-pane-1">
@@ -121,21 +137,37 @@
                     <div class="tab-pane fade" id="tab-pane-3">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
+                                <h4 class="mb-4">{{ $product->review_count }} review for "{{ $product->title }}"</h4>
+                                @foreach ($product->review->take(5) as $review)
+
                                 <div class="media mb-4">
-                                    <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                    <img src="{{ $reiew->user->image ?? asset('img/user.jpg') }}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                     <div class="media-body">
-                                        <h6>John Doe<small> - <i>01 Jan 2024</i></small></h6>
-                                        <div class="text-primary mb-2">
+                                        <h6>{{ $review->user->name }}</i></small></h6>
+                                        {{-- <div class="text-primary mb-2">
                                             <i class="fas fa-star"></i>
                                             <i class="fas fa-star"></i>
                                             <i class="fas fa-star"></i>
                                             <i class="fas fa-star-half-alt"></i>
                                             <i class="far fa-star"></i>
-                                        </div>
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                        </div> --}}
+                                         @php
+                        $avgrating = round($review->rating);
+                        $emptystar = 5 - $avgrating;
+                        @endphp
+
+                        {{-- full star --}}
+                        @for ($i = 0; $i < $avgrating; $i++)
+                        <small class="fas fa-star"></small>
+                        @endfor
+                        {{-- Empty star --}}
+                        @for ($i = 0; $i < $emptystar; $i++)
+                        <small class="far fa-star"></small>
+                        @endfor
+                        <p>{{$review->review}}</p>
                                     </div>
                                 </div>
+                                @endforeach
                             </div>
                             @if (auth()->check())
 
