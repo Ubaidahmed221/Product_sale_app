@@ -102,7 +102,7 @@
                 <div class="d-flex pt-2">
                     <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
                     <div class="d-inline-flex">
-                        <a class="text-dark px-2" href="">
+                        {{-- <a class="text-dark px-2" href="">
                             <i class="fab fa-facebook-f"></i>
                         </a>
                         <a class="text-dark px-2" href="">
@@ -113,7 +113,14 @@
                         </a>
                         <a class="text-dark px-2" href="">
                             <i class="fab fa-pinterest"></i>
-                        </a>
+                        </a> --}}
+                        {!! Share::page(url()->current(), $product->title)->facebook()
+                        ->twitter()
+                        ->whatsapp()
+                        ->linkedin()
+                        ->pinterest($product->images->first()->path)
+
+                        !!}
                     </div>
                 </div>
             </div>
@@ -144,13 +151,7 @@
                                     <img src="{{ $reiew->user->image ?? asset('img/user.jpg') }}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                     <div class="media-body">
                                         <h6>{{ $review->user->name }}</i></small></h6>
-                                        {{-- <div class="text-primary mb-2">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half-alt"></i>
-                                            <i class="far fa-star"></i>
-                                        </div> --}}
+
                                          @php
                         $avgrating = round($review->rating);
                         $emptystar = 5 - $avgrating;
