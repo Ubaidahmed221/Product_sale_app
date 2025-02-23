@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\SubscriberController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProductController as websiteProductController;
 
 /*
@@ -51,6 +52,9 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
     Route::get('/dashboard',function(){
         return 'User Dashboard';
     })->name('user.dashboard');
+
+    Route::post('/review',[ReviewController::class,'store'] )->name('review.store');
+
 
 });
 

@@ -137,37 +137,39 @@
                                     </div>
                                 </div>
                             </div>
+                            @if (auth()->check())
+
                             <div class="col-md-6">
                                 <h4 class="mb-4">Leave a review</h4>
                                 <small>Your email address will not be published. Required fields are marked *</small>
                                 <div class="d-flex my-3">
                                     <p class="mb-0 mr-2">Your Rating * :</p>
-                                    <div class="text-primary">
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
+                                    <div class="text-primary ratings">
+                                        <i class="far fa-star" data-value="1" ></i>
+                                        <i class="far fa-star" data-value="2" ></i>
+                                        <i class="far fa-star" data-value="3" ></i>
+                                        <i class="far fa-star" data-value="4" ></i>
+                                        <i class="far fa-star" data-value="5" ></i>
                                     </div>
                                 </div>
-                                <form>
+                                <form id="review-form" >
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="rating" id="rating-value" >
                                     <div class="form-group">
                                         <label for="message">Your Review *</label>
-                                        <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
+                                        <textarea id="message" name="review" cols="30" rows="5" class="form-control" required ></textarea>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="name">Your Name *</label>
-                                        <input type="text" class="form-control" id="name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Your Email *</label>
-                                        <input type="email" class="form-control" id="email">
-                                    </div>
+
                                     <div class="form-group mb-0">
-                                        <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
+                                        <button type="submit" class="btn btn-primary px-3 reviewBtn" >Leave Your Review</button>
+
                                     </div>
                                 </form>
                             </div>
+                            @else
+                            <p>You Must <a href="{{ route('loginView') }}">Login in</a> to leave a review..</p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -179,3 +181,54 @@
 
 @endsection
 
+@push('script')
+
+<script>
+    $(document).ready(function(){
+        $(".ratings i").click(function(){
+
+            console.log($(this).data('value'));
+
+           let rating = $(this).data('value');
+           console.log(rating);
+           $("#rating-value").val(rating);
+
+           $(".ratings i").removeClass("fas").addClass("far");
+
+           $(".ratings i").each(function(index){
+            if(index < rating){
+                $(this).removeClass("far").addClass("fas");
+            }
+           })
+        });
+
+        $('#review-form').submit(function(e){
+            e.preventDefault();
+
+            $('reviewBtn').html(`<div class="spinner-border" ></div>`);
+            $('.reviewBtn').prop('disabled', true);
+
+            var formData = $(this).serialize();
+
+            $.ajax({
+                url: "{{ route('review.store') }}",
+                type: "POST",
+                data: formData,
+                success: function(res){
+                    $('reviewBtn').html(`Leave Your Review`);
+                    $('.reviewBtn').prop('disabled', false);
+                    alert(res.message);
+                    if(res.success){
+                        location.reload();
+                    }
+
+                },
+                error: function(err){
+                    alert(err.responseText);
+                }
+            });
+        })
+    })
+</script>
+
+@endpush
