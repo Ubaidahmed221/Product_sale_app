@@ -22,8 +22,9 @@ class ProductController extends Controller
           {
             $variationName = $productVaration->variation->name; // color,size etc..
             $variationValue = $productVaration->variationValue->value; // yellow,red,XL,S etc..
+            $variationValueId = $productVaration->variationValue->id;
 
-            $variations[$variationName][] = $variationValue;
+            $variations[$variationName][] = ['value' => $variationValue , 'id' => $variationValueId ];
           }
 
           return view('product.detail',compact(['product','variations']));

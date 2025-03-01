@@ -71,11 +71,11 @@
                 @foreach ($variations as $variationName => $values)
                 <div class="d-flex mb-3">
                     <p class="text-dark font-weight-medium mb-0 mr-3">{{ ucfirst($variationName) }} {{ $values[0]  }}:</p>
-                    @foreach ($values as $key => $value)
+                    @foreach ($values as $key => $variation)
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="{{ strtolower($variationName) }} - {{ $key + 1 }}"
-                             name="{{ strtolower($variationName) }}">
-                            <label class="custom-control-label" for="{{ strtolower($variationName) }} - {{ $key + 1 }}">{{ $value }}</label>
+                            <input type="radio" class="custom-control-input" id="{{ strtolower($variationName) }} - {{ $variation['id'] }}"
+                             name="{{ strtolower($variationName) }}" value="{{ $variation['id'] }}" >
+                            <label class="custom-control-label" for="{{ strtolower($variationName) }} - {{  $variation['id'] }}">{{ $variation['value'] }}</label>
                         </div>
                         @endforeach
 
@@ -97,23 +97,19 @@
                             </button>
                         </div>
                     </div>
-                    <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                    @if (auth()->check())
+
+                    <button class="btn btn-primary px-3 add-to-cart "  >
+                        <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+                    </button>
+                    @else
+                    <span class="text-danger mt-3"><a href="{{ route('loginView') }}"> Login </a> to add to cart. </span>
+                    @endif
                 </div>
                 <div class="d-flex pt-2">
                     <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
                     <div class="d-inline-flex">
-                        {{-- <a class="text-dark px-2" href="">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a class="text-dark px-2" href="">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a class="text-dark px-2" href="">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a class="text-dark px-2" href="">
-                            <i class="fab fa-pinterest"></i>
-                        </a> --}}
+
                         {!! Share::page(url()->current(), $product->title)->facebook()
                         ->twitter()
                         ->whatsapp()
