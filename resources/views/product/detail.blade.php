@@ -70,10 +70,10 @@
 
                 @foreach ($variations as $variationName => $values)
                 <div class="d-flex mb-3">
-                    <p class="text-dark font-weight-medium mb-0 mr-3">{{ ucfirst($variationName) }} {{ $values[0]  }}:</p>
+                    <p class="text-dark font-weight-medium mb-0 mr-3">{{ ucfirst($variationName) }} {{ $values[0]['value']  }}:</p>
                     @foreach ($values as $key => $variation)
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="{{ strtolower($variationName) }} - {{ $variation['id'] }}"
+                            <input type="radio" class="custom-control-input product-variations" id="{{ strtolower($variationName) }} - {{ $variation['id'] }}"
                              name="{{ strtolower($variationName) }}" value="{{ $variation['id'] }}" >
                             <label class="custom-control-label" for="{{ strtolower($variationName) }} - {{  $variation['id'] }}">{{ $variation['value'] }}</label>
                         </div>
@@ -90,7 +90,7 @@
                             <i class="fa fa-minus"></i>
                             </button>
                         </div>
-                        <input type="text" class="form-control bg-secondary text-center" value="1">
+                        <input type="text" class="form-control bg-secondary text-center quantity-input" value="1">
                         <div class="input-group-btn">
                             <button class="btn btn-primary btn-plus">
                                 <i class="fa fa-plus"></i>
@@ -256,6 +256,47 @@
                     alert(err.responseText);
                 }
             });
+        });
+
+        // add to cart
+        $('.add-to-cart').click(function(){
+            let obj = $(this);
+            $(obj).html(`<div class="spinner-border"></div>`);
+            $(obj).prop('disabled',true);
+            var variationValues = [];
+            var productId = "{{$product->id}}";
+            var quantity = $('.quantity-input').val();
+            if(quantity < 1){
+                alert('Minimum quatity should be atleast 1.');
+            }
+
+            $('.product-variations:checked').each(function(){
+                variationValues.push($(this).val());
+            });
+
+            $.ajax({
+                url: "{{ route('cart.store') }}",
+                type: "POST",
+                data: {
+                    _token: "{{csrf_token()}}",
+                    product_id: productId,
+                    quantity: quantity,
+                    variation_values: variationValues
+                },
+                success: function(response){
+                    $(obj).html(`<i class="fa fa-shopping-cart mr-1"></i> Add To Cart`);
+                    $(obj).prop('disabled',false);
+
+                    alert(response.msg);
+                },
+                error: function(error){
+                    $(obj).html(`<i class="fa fa-shopping-cart mr-1"></i> Add To Cart`);
+                    $(obj).prop('disabled',false);
+                    alert(error.msg)
+                }
+            });
+
+
         })
     })
 </script>

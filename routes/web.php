@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\VariationController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProductController as websiteProductController;
@@ -55,6 +56,8 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
 
     Route::post('/review',[ReviewController::class,'store'] )->name('review.store');
     Route::post('/logout',[AuthController::class,'logout'] )->name('logout');
+
+    Route::post('/cart/store',[CartController::class,'store'] )->name('cart.store');
 
 
 });
