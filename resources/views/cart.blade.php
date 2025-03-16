@@ -36,7 +36,7 @@
                             <tr colspan="6" >Cart Empty</tr>
                         @endif
                         @foreach ($cartitems as $cart)
-                        <tr>
+                        <tr data-id="{{$cart->id}}" >
                             <td class="align-middle"><img src="{{ asset($cart->product->firstImage->path) }}" alt="" style="width: 50px;">
                                  {{ $cart->product->title }}</td>
                                  <td class="align-middle text-left" >
@@ -54,7 +54,8 @@
                                         <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary text-center" value="{{$cart->quantity}}">
+                                    <input type="text" class="form-control form-control-sm bg-secondary text-center" style="pointer-events:none"
+                                     value="{{$cart->quantity}}">
                                     <div class="input-group-btn">
                                         <button class="btn btn-sm btn-primary btn-plus">
                                             <i class="fa fa-plus"></i>
@@ -62,8 +63,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle">${{ $cart->product->usd_price * $cart->quantity}}</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                            <td class="align-middle CartTotal ">${{ $cart->product->usd_price * $cart->quantity}}</td>
+                            <td class="align-middle"><button class="btn btn-sm btn-primary cartDelete" data-id="{{$cart->id}}" >
+                                <i class="fa fa-times"></i></button></td>
                         </tr>
                             
                         @endforeach
@@ -87,7 +89,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium">${{  getCartTotal() }}</h6>
+                            <h6 class="font-weight-medium cart-sub-total ">${{  getCartTotal() }}</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Shipping</h6>
@@ -97,7 +99,7 @@
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">${{ getCartTotal() }}</h5>
+                            <h5 class="font-weight-bold cart-total">${{ getCartTotal() }}</h5>
                         </div>
                         <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
                     </div>
@@ -109,3 +111,90 @@
 
 
 @endsection
+@push('script')
+<script>
+    $('document').ready(function(){
+
+        // cart delete
+        $('.cartDelete').click(function(){
+            $('#page-loader').show();
+            var obj = $(this);
+        var id =  $(obj).data('id');
+
+        $.ajax({
+                url: "{{ route('cart.destory') }}",
+                type: "DELETE",
+                data: {
+                    _token: "{{csrf_token()}}",
+                    id: id
+                },
+                success: function(response){
+            $('#page-loader').hide();
+
+                    if(response.success ){
+                        $(obj).parent().parent().remove();
+                        var count =  $('.cart-badge-count').text();
+                        $('.cart-badge-count').text(parseInt(count) - 1);
+                        $('.cart-sub-total').text(response.total);
+                        $('.cart-total').text(response.total);
+                        alert(response.msg);
+                    }
+                    else{
+                        alert(response.msg);
+
+                    }
+                },
+                error: function(error){
+            $('#page-loader').hide();
+                    alert(error.msg)
+                }
+            });
+
+        });
+
+        // cart increment & descrement
+        $('.btn-plus, .btn-minus').click(function(){
+            $('#page-loader').show();
+           var obj =  $(this);
+           var input = obj.closest('.quantity').find('input');
+           var currentquantity = parseInt(input.val());
+           var cartId = obj.closest('tr').data('id');
+
+           $.ajax({
+                url: "{{ route('cart.update') }}",
+                type: "PUT",
+                data: {
+                    _token: "{{csrf_token()}}",
+                    id: cartId,
+                    quantity: currentquantity
+                },
+                success: function(response){
+            $('#page-loader').hide();
+
+                    if(response.success ){
+                    
+                        $('.cart-sub-total').text(response.total);
+                        $('.cart-total').text(response.total);
+                       obj.closest('tr').find('.CartTotal').text(response.cartTotal);
+
+                        alert(response.msg);
+                    }
+                    else{
+                        if(obj.hasClass('btn-plus')){
+                            currentquantity--;
+                            input.val(currentquantity);
+                        }
+                        alert(response.msg);
+
+                    }
+                },
+                error: function(error){
+            $('#page-loader').hide();
+                    alert(error.msg)
+                }
+            });
+        });
+    });
+
+</script>
+@endpush

@@ -85,4 +85,72 @@ class CartController extends Controller
             ]);
         }
     }
+
+    public function update(Request $request){
+        try{
+            $request->validate([
+                'id' => 'required|exists:carts,id',
+                'quantity' => 'required|integer|min:1',
+            ]);
+
+            $cart = Cart::findOrFail($request->id);
+         $product =  Product::findOrFail($cart->product_id);
+        $Productcartquantity = getProductCartCountIgnore($cart->product_id, $cart->id);
+
+          $userCartQuantity =  $Productcartquantity + $request->quantity;
+            if($product->stock < $userCartQuantity){
+                return response()->json([
+                    'success' => false,
+                    'msg' => 'Not Enough stock available'
+               
+                ]);
+            }
+
+            $cart->update([
+                'quantity' => $request->quantity
+            ]);
+            return response()->json([
+                'success' => true,
+                'msg' => 'Cart Update Successfully',
+                'total' => '$'.getCartTotal(),
+                'cartTotal' => '$'.$product->usd_price * $request->quantity
+           
+            ]);
+
+        }
+        catch(\Exception $e){
+
+            return response()->json([
+                'success' => false,
+                'msg' => $e->getMessage(),
+           
+            ]);
+        }
+    }
+
+    public function destory(Request $request){
+        try{
+            $request->validate([
+                'id' => 'required|exists:carts,id',
+            ]);
+
+            Cart::where('id',$request->id)->delete();
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Cart Remove Successfully',
+                'total' => '$'.getCartTotal()
+           
+            ]);
+
+        }
+        catch(\Exception $e){
+
+            return response()->json([
+                'success' => false,
+                'msg' => $e->getMessage(),
+           
+            ]);
+        }
+    }
 }

@@ -59,6 +59,8 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
 
     Route::post('/cart/store',[CartController::class,'store'] )->name('cart.store');
     Route::get('/cart',[CartController::class,'index'] )->name('cart');
+    Route::delete('/cart',[CartController::class,'destory'] )->name('cart.destory');
+    Route::put('/cart',[CartController::class,'update'] )->name('cart.update');
 
 
 });

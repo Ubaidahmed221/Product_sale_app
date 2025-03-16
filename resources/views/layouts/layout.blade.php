@@ -26,6 +26,11 @@
 </head>
 
 <body>
+    <div id="page-loader"  style="display: none">
+        <div class="spinner">
+
+        </div>
+    </div>
     <!-- Topbar Start -->
     @include('layouts.topbar-layout')
     <!-- Topbar End -->

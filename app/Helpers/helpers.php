@@ -135,6 +135,23 @@ function getJustArrivedProducts(){
     }
   }
 
+  function getProductCartCountIgnore($productId, $cartId){
+    try{
+
+     
+      return  Cart::where([
+          'product_id' => $productId
+      ])
+      ->where('id','!=',$cartId)
+      ->sum('quantity');
+      
+
+    }
+    catch(\Exception $e){
+        return 0;
+
+    }
+  }
   function getCartTotal(){
     try{
       $cartItem = Cart::where('user_id',auth()->user()->id)
