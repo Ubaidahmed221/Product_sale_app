@@ -9,6 +9,18 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
+
+    public function index(){
+        try{
+         $cartitems =  Cart::where('user_id',Auth::id())->with(['product.firstImage'])->get();
+            return view('cart',compact('cartitems'));
+        }
+        catch(\Exception $e){
+            return abort(404);
+
+        }
+    }
+
    public function store(Request $request){
         try{
             $request->validate([
@@ -18,6 +30,20 @@ class CartController extends Controller
                 'variation_values.*' => 'exists:variation_values,id'
 
             ]);
+        $Productcartquantity = getProductCartCount($request->product_id);
+          $totalproductcartquantity =  $Productcartquantity + $request->quantity;
+
+        $product =  Product::findOrFail($request->product_id);
+
+        if($product->stock < $totalproductcartquantity){
+            return response()->json([
+                'success' => false,
+                'msg' => 'Not enough stock available!'
+               
+            ]);
+
+        }
+
             $user_id = Auth::id();
           $variationValues =  json_encode($request->variation_values);
 
@@ -32,6 +58,7 @@ class CartController extends Controller
             $existingcartItem->increment('quantity',$request->quantity);
             return response()->json([
                 'success' => true,
+                'cart_added' => false,
                 'msg' => 'Cart updated! Quantity increased!',
                 'data' => $existingcartItem
             ]);
@@ -45,6 +72,7 @@ class CartController extends Controller
             ]);
             return response()->json([
                 'success' => true,
+                'cart_added' => true,
                 'msg' => 'Product added to cart',
                 'data' => $cartItem
             ]);
@@ -52,6 +80,7 @@ class CartController extends Controller
         catch(\Exception $e){
             return response()->json([
                 'success' => false,
+                'cart_added' => false,
                 'msg' => $e->getMessage()
             ]);
         }

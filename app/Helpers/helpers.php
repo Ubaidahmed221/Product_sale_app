@@ -4,6 +4,7 @@ use App\Models\AppData;
 use App\Models\Menu;
 use App\Models\category;
 use App\Models\Banner;
+use App\Models\Cart;
 use App\Models\Variation;
 use App\Models\Offer;
 use App\Models\Product;
@@ -98,6 +99,53 @@ function getJustArrivedProducts(){
     }
     catch(\Exception $e){
         return [];
+
+    }
+  }
+
+  function getCartCount(){
+    try{
+
+      if(auth()->check()){
+      return  Cart::where('user_id',auth()->id())->count();
+      }
+      else{
+        return 0;
+      }
+
+    }
+    catch(\Exception $e){
+        return 0;
+
+    }
+  }
+  function getProductCartCount($productId){
+    try{
+
+     
+      return  Cart::where([
+          'product_id' => $productId
+      ])->sum('quantity');
+      
+
+    }
+    catch(\Exception $e){
+        return 0;
+
+    }
+  }
+
+  function getCartTotal(){
+    try{
+      $cartItem = Cart::where('user_id',auth()->user()->id)
+      ->with('product')->get();
+
+    $cartTotal =  $cartItem->sum(fn($item) => $item->product->usd_price * $item->quantity);
+      return $cartTotal;
+
+    }
+    catch(\Exception $e){
+        return 0;
 
     }
   }

@@ -288,6 +288,10 @@
                     $(obj).prop('disabled',false);
 
                     alert(response.msg);
+                    if(response.success && response.cart_added){
+                      var count =  $('.cart-badge-count').text();
+                      $('.cart-badge-count').text(parseInt(count) + 1);
+                    }
                 },
                 error: function(error){
                     $(obj).html(`<i class="fa fa-shopping-cart mr-1"></i> Add To Cart`);

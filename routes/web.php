@@ -58,6 +58,7 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
     Route::post('/logout',[AuthController::class,'logout'] )->name('logout');
 
     Route::post('/cart/store',[CartController::class,'store'] )->name('cart.store');
+    Route::get('/cart',[CartController::class,'index'] )->name('cart');
 
 
 });
