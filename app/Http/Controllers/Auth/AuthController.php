@@ -44,6 +44,8 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'code' => $request->code,
                 'phone_number' => $request->phone,
+                'country' => $request->country,
+                'state' => $request->state,
                 'password' => Hash::make($request->password),
                 'verification_token' => $verificationToken,
                 'token_expires_at' => $tokenExpiresAt,

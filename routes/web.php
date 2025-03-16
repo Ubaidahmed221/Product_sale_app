@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProductController as websiteProductController;
@@ -122,4 +123,5 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
 Route::post('/subscribe',[SubscriberController::class,'store'] )->name('subscribe');
 Route::get('/unsubscribe/{token}',[SubscriberController::class,'unsubscribe'] )->name('unsubscribe');
 Route::get('/detail/{string}',[websiteProductController::class,'detail'] )->name('product.detail');
+Route::post('/states',[Controller::class,'states'] )->name('states');
 

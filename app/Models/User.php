@@ -27,7 +27,9 @@ class User extends Authenticatable
         'currency',
         'is_verified',
         'verification_token',
-        'token_expires_at'
+        'token_expires_at',
+        'country',
+        'state'
     ];
 
     /**

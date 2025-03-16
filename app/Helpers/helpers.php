@@ -5,6 +5,7 @@ use App\Models\Menu;
 use App\Models\category;
 use App\Models\Banner;
 use App\Models\Cart;
+use App\Models\Country;
 use App\Models\Variation;
 use App\Models\Offer;
 use App\Models\Product;
@@ -163,6 +164,18 @@ function getJustArrivedProducts(){
     }
     catch(\Exception $e){
         return 0;
+
+    }
+  }
+
+  function countries(){
+    try{
+
+    return  Country::all();
+
+    }
+    catch(\Exception $e){
+        return [];
 
     }
   }

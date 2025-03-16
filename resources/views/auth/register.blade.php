@@ -42,6 +42,28 @@
         @enderror
         </div>
         <div class="form-group">
+          <label >Country </label>
+          <select name="country" id="country" class="form-control" required >
+            <option value="">Select Country</option>
+            @foreach (countries() as $country )
+                <option value="{{$country->iso2}}">{{$country->name}}</option>
+            @endforeach
+          </select>
+          @error('country')
+          <span class="error-message">{{ $message }}</span>
+      @enderror
+      </div>
+      <div class="form-group">
+        <label >State </label>
+        <select name="state" id="state" class="form-control"  >
+          <option value="">Select State</option>
+        
+        </select>
+        @error('state')
+        <span class="error-message">{{ $message }}</span>
+    @enderror
+    </div>
+        <div class="form-group">
           <label >Password</label>
           <input type="password" name="password"  class="form-control"  placeholder="Enter Your Password" required  >
           @error('password')
@@ -87,6 +109,36 @@
         $('.iti__flag-container').click(function(){
             $('#code').val('+'+phoneInput.s.dialCode);
         });
+
+        // country & state
+        $('#country').change(function(){
+          var countryCode = $(this).val();
+
+          $.ajax({
+                url: "{{ route('states') }}",
+                type: "POST",
+                data: {
+                    _token: "{{csrf_token()}}",
+                    countryCode: countryCode
+                },
+                success: function(response){
+                    if(response.success){
+                      let data = response.data;
+                      let html = '<option value="" >Select State</option>';
+                      data.forEach(element => {
+                         html += `<option value="`+element.state_code+`" >`+element.name+`</option>`;
+
+                      });
+                      $('#state').html(html);
+                    }else{
+                      alert(response.msg);
+                    }
+                },
+                error: function(error){
+                   alert(error.message);
+                }
+            });
+        })
     });
 
 </script>
