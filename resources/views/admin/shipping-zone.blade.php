@@ -142,7 +142,7 @@
 </div>
 
   <!-- Delete Modal -->
-  <div class="modal fade" id="deleteModel" data-backdrop="static" data-keyboard="false" tabindex="-1"
+ <div class="modal fade" id="deleteModel" data-backdrop="static" data-keyboard="false" tabindex="-1"
   aria-labelledby="createModelLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">

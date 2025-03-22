@@ -8,6 +8,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\VariationController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ShippingController;
@@ -126,10 +127,19 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
       Route::put('/shipping',[ShippingController::class,'update'] )->name('admin.shipping.update');
       Route::delete('/shipping',[ShippingController::class,'destory'] )->name('admin.shipping.destory');
      
+      // Coupon
+      Route::get('/admin/coupon',[CouponController::class,'index'] )->name('admin.coupon');
+      Route::post('/coupon',[CouponController::class,'store'] )->name('admin.coupon.store');
+      Route::put('/coupon',[CouponController::class,'update'] )->name('admin.coupon.update');
+      Route::delete('/coupon',[CouponController::class,'destroy'] )->name('admin.coupon.destroy');
+    
 
 });
 Route::post('/subscribe',[SubscriberController::class,'store'] )->name('subscribe');
 Route::get('/unsubscribe/{token}',[SubscriberController::class,'unsubscribe'] )->name('unsubscribe');
 Route::get('/detail/{string}',[websiteProductController::class,'detail'] )->name('product.detail');
 Route::post('/states',[Controller::class,'states'] )->name('states');
+Route::get('/shop', function(){
+    return 'shop';
+} )->name('shop');
 

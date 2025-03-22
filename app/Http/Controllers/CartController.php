@@ -123,6 +123,7 @@ class CartController extends Controller
             return response()->json([
                 'success' => true,
                 'msg' => 'Cart Update Successfully',
+                'sub_total' =>  $currency.' '. getCartSubTotal(),
                 'total' =>  $currency.' '. getCartTotal(),
                 'cartTotal' =>  $cartTotal
            
@@ -146,11 +147,19 @@ class CartController extends Controller
             ]);
 
             Cart::where('id',$request->id)->delete();
-
+            $currency = '';
+            if(getUserCurrency()){
+                $currency = 'Rs';
+            }else{
+                $currency = '$';
+           
+            }
             return response()->json([
                 'success' => true,
                 'msg' => 'Cart Remove Successfully',
-                'total' => '$'.getCartTotal()
+                'sub_total' =>  $currency.' '. getCartSubTotal(),
+                'total' =>  $currency.' '.getCartTotal(),
+                'count' => getCartCount()
            
             ]);
 

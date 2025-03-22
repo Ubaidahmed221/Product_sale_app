@@ -9,6 +9,7 @@ use App\Models\Country;
 use App\Models\Variation;
 use App\Models\Offer;
 use App\Models\Product;
+use App\Models\ShippingZone;
 
 function getAppData($select){
 
@@ -164,6 +165,26 @@ function getJustArrivedProducts(){
 
         $cartTotal =  $cartItem->sum(fn($item) => $item->product->usd_price * $item->quantity);
       }
+      return $cartTotal + shippingAmount() ;
+
+    }
+    catch(\Exception $e){
+        return 0;
+
+    }
+  }
+
+  function getCartSubTotal(){
+    try{
+      $cartItem = Cart::where('user_id',auth()->user()->id)
+      ->with('product')->get();
+      if(getUserCurrency()){
+        $cartTotal =  $cartItem->sum(fn($item) => $item->product->pkr_price * $item->quantity);
+
+      }else{
+
+        $cartTotal =  $cartItem->sum(fn($item) => $item->product->usd_price * $item->quantity);
+      }
       return $cartTotal;
 
     }
@@ -197,6 +218,31 @@ function getJustArrivedProducts(){
     }
     catch(\Exception $e){
         return null;
+
+    }
+  }
+  function shippingAmount(){
+    try{
+      $shippingCost = 0;
+
+   $shippingZone =   ShippingZone::where('country',auth()->user()->country)
+      ->where(function($query) {
+        if(!empty(auth()->user()->state)){
+          $query->where('state',auth()->user()->state);
+        }else{
+          $query->whereNull('state');
+        }
+      })
+      ->first();
+
+      if($shippingZone){
+        $shippingCost = getUserCurrency() ? $shippingZone->shipping_cost_pkr : $shippingZone->shipping_cost_usd; 
+      }
+      return $shippingCost;
+
+    }
+    catch(\Exception $e){
+        return 0;
 
     }
   }

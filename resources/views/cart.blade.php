@@ -31,9 +31,11 @@
                             <th>Remove</th>
                         </tr>
                     </thead>
-                    <tbody class="align-middle">
+                    <tbody class="align-middle cart-table">
                         @if (count($cartitems) == 0)
-                            <tr colspan="6" >Cart Empty</tr>
+                            <tr >
+                                <td colspan="6" > Cart Empty ! <a href="{{ route('shop') }}">Shop</a></td>
+                            </tr>
                         @endif
                         @foreach ($cartitems as $cart)
                         <tr data-id="{{$cart->id}}" >
@@ -48,7 +50,7 @@
                                  </td>
                             <td class="align-middle">
                                 @if (getUserCurrency())
-                                Rs {{ $cart->product->usd_price }}
+                                Rs {{ $cart->product->pkr_price }}
                                  @else
                               $ {{ $cart->product->usd_price }}
                                   @endif
@@ -95,7 +97,7 @@
                         </div>
                     </div>
                 </form>
-                <div class="card border-secondary mb-5">
+                <div class="card border-secondary mb-5 cart-summary {{ count($cartitems) == 0 ? 'd-none' : ''}}">
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
                     </div>
@@ -104,9 +106,9 @@
                             <h6 class="font-weight-medium">Subtotal</h6>
                             <h6 class="font-weight-medium cart-sub-total ">
                                 @if (getUserCurrency())
-                                Rs {{ getCartTotal() }}
+                                Rs {{ getCartSubTotal() }}
                                  @else
-                              $ {{ getCartTotal() }}
+                              $ {{ getCartSubTotal() }}
                                   @endif
                                 
                             
@@ -120,7 +122,7 @@
                                  @else
                               $ 
                                   @endif
-                                  0
+                                  {{shippingAmount()}}
                             </h6>
                         </div>
                     </div>
@@ -167,10 +169,18 @@
 
                     if(response.success ){
                         $(obj).parent().parent().remove();
-                        var count =  $('.cart-badge-count').text();
-                        $('.cart-badge-count').text(parseInt(count) - 1);
-                        $('.cart-sub-total').text(response.total);
+                        // var count =  $('.cart-badge-count').text();
+                        $('.cart-badge-count').text(response.count);
+                        $('.cart-sub-total').text(response.sub_total);
                         $('.cart-total').text(response.total);
+                        if(response.count == 0){
+                            $('.cart-table').html(`
+                             <tr >
+                                <td colspan="6" > Cart is Empty ! <a href="{{ route('shop') }}">Shop</a></td>
+                            </tr>
+                            `);
+                            $('.cart-summary').hide();
+                        }
                         alert(response.msg);
                     }
                     else{
@@ -207,7 +217,7 @@
 
                     if(response.success ){
                     
-                        $('.cart-sub-total').text(response.total);
+                        $('.cart-sub-total').text(response.sub_total);
                         $('.cart-total').text(response.total);
                        obj.closest('tr').find('.CartTotal').text(response.cartTotal);
 
