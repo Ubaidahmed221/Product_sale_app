@@ -26,6 +26,9 @@
           <a href="{{ route('admin.offers') }}"><span class="fa fa-gift mr-3"></span>Offers </a>
       </li>
       <li>
+        <a href="{{ route('admin.shipping') }}"><span class="fa fa-truck mr-3"></span>Shipping Zones </a>
+    </li>
+      <li>
         <a href="#" class="logout-btn" ><span class="fa fa-sign-out mr-3 "></span>Log Out </a>
     </li>
 

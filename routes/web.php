@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\VariationController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\SubscriberController;
@@ -118,6 +119,12 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
      Route::post('/admin-offer-update',[OfferController::class,'update'] )->name('admin.offer.update');
      Route::delete('/admin-offer-destory',[OfferController::class,'destory'] )->name('admin.offer.destory');
 
+      // shipping 
+      Route::get('/admin/shipping',[ShippingController::class,'index'] )->name('admin.shipping');
+      Route::post('/shipping',[ShippingController::class,'store'] )->name('admin.shipping.store');
+      Route::put('/shipping',[ShippingController::class,'update'] )->name('admin.shipping.update');
+      Route::delete('/shipping',[ShippingController::class,'destory'] )->name('admin.shipping.destory');
+     
 
 });
 Route::post('/subscribe',[SubscriberController::class,'store'] )->name('subscribe');

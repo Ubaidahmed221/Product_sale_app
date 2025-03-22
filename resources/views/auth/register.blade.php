@@ -138,7 +138,7 @@
                    alert(error.message);
                 }
             });
-        })
+        });
     });
 
 </script>
