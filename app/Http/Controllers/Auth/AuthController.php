@@ -245,4 +245,26 @@ class AuthController extends Controller
         }
     }
 
+    public function CurrencyUpdate(Request $request){
+        try{
+            $request->validate([
+                'currency' => 'required|string'
+            ]);
+        $user =  User::findOrFail(Auth::user()->id);
+        $user->currency = $request->currency;
+        $user->save();
+            return response()->json([
+                'success' => true,
+                'message' => 'Currency Update SUccessfully'
+            ]);
+        }
+        catch(\Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+
+        }
+    }
+
 }

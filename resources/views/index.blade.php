@@ -85,7 +85,16 @@
                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                     <h6 class="text-truncate mb-3">{{ $product->title }}</h6>
                     <div class="d-flex justify-content-center">
-                        <h6>${{ $product->usd_price }}</h6><h6 class="text-muted ml-2"><del>${{ $product->usd_price }}</del></h6>
+                        @if (getUserCurrency())
+                            
+                        <h6>Rs {{ $product->pkr_price }}</h6>
+                        <h6 class="text-muted ml-2"><del>Rs {{ $product->pkr_price }}</del></h6>
+
+                        @else
+                        
+                        <h6>${{ $product->usd_price }}</h6>
+                        <h6 class="text-muted ml-2"><del>${{ $product->usd_price }}</del></h6>
+                        @endif
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-between bg-light border">

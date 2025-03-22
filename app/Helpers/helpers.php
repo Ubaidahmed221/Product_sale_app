@@ -157,8 +157,13 @@ function getJustArrivedProducts(){
     try{
       $cartItem = Cart::where('user_id',auth()->user()->id)
       ->with('product')->get();
+      if(getUserCurrency()){
+        $cartTotal =  $cartItem->sum(fn($item) => $item->product->pkr_price * $item->quantity);
 
-    $cartTotal =  $cartItem->sum(fn($item) => $item->product->usd_price * $item->quantity);
+      }else{
+
+        $cartTotal =  $cartItem->sum(fn($item) => $item->product->usd_price * $item->quantity);
+      }
       return $cartTotal;
 
     }
@@ -176,6 +181,22 @@ function getJustArrivedProducts(){
     }
     catch(\Exception $e){
         return [];
+
+    }
+  }
+  function getUserCurrency(){
+    try{
+
+      $ispkr = 1;
+      if(auth()->check() && auth()->user()->currency != 'pkr'){
+        $ispkr = 0;
+
+      }
+      return $ispkr;
+
+    }
+    catch(\Exception $e){
+        return null;
 
     }
   }

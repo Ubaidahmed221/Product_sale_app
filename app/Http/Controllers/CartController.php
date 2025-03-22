@@ -109,11 +109,22 @@ class CartController extends Controller
             $cart->update([
                 'quantity' => $request->quantity
             ]);
+
+            $currency = '';
+            if(getUserCurrency()){
+                $currency = 'Rs';
+                $cartTotal = $currency . ' '. $product->pkr_price * $request->quantity;
+            }else{
+                $currency = '$';
+                $cartTotal = $currency . ' '. $product->usd_price * $request->quantity;
+           
+            }
+
             return response()->json([
                 'success' => true,
                 'msg' => 'Cart Update Successfully',
-                'total' => '$'.getCartTotal(),
-                'cartTotal' => '$'.$product->usd_price * $request->quantity
+                'total' =>  $currency.' '. getCartTotal(),
+                'cartTotal' =>  $cartTotal
            
             ]);
 

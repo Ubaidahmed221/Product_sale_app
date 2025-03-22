@@ -65,7 +65,15 @@
                 </div>
 <small class="pt-1">({{ $product->review_count }} Reviews)</small>
                 </div>
-                <h3 class="font-weight-semi-bold mb-4">${{ $product->usd_price }}</h3>
+
+                <h3 class="font-weight-semi-bold mb-4">
+                    @if (getUserCurrency())
+                   Rs {{ $product->pkr_price }}
+                    @else
+                 ${{ $product->usd_price }}
+                     @endif
+                
+                </h3>
                 <p class="mb-4">{{ $product->description }}</p>
 
                 @foreach ($variations as $variationName => $values)

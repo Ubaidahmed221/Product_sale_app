@@ -63,6 +63,7 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
     Route::get('/cart',[CartController::class,'index'] )->name('cart');
     Route::delete('/cart',[CartController::class,'destory'] )->name('cart.destory');
     Route::put('/cart',[CartController::class,'update'] )->name('cart.update');
+    Route::put('/currency-update',[AuthController::class,'CurrencyUpdate'] )->name('user.currency.update');
 
 
 });

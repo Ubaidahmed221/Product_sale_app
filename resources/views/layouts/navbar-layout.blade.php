@@ -60,6 +60,26 @@
 
                         @endforeach
 
+                        @if (auth()->check())
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Currency - 
+                                @if (getUserCurrency())
+                               
+                                <i class="fas fa-rupe-sign">Rs &nbsp; PKR</i>
+                                @else
+                                <i class="fas fa-dollar-sign">USD</i>
+                                @endif
+
+                            </a>
+                            <div class="dropdown-menu rounded-0 m-0">
+                             
+                          <a data-currency="pkr" class="dropdown-item currencyupdate {{ getUserCurrency() ? 'active' : '' }}">  <i class="fas fa-rupe-sign">Rs &nbsp; PKR</i></a>
+                          <a data-currency="usd" class="dropdown-item currencyupdate {{ getUserCurrency() ? '' : 'active' }}">  <i class="fas fa-dollar-sign">&nbsp; USD</i></a>
+
+                      
+                            </div>
+                        </div>
+                        @endif
 
                      </div>
                     <div class="navbar-nav ml-auto py-0">

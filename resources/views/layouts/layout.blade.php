@@ -104,10 +104,33 @@
                         }
 
                     }
-                })
+                });
 
-            })
-        })
+            });
+            $('.currencyupdate').click(function(){
+                $('#page-loader').show();
+                var currency = $(this).data('currency');
+
+                $.ajax({
+                    url: "{{ route('user.currency.update') }}",
+                    type: "PUT",
+                    data:{
+                        _token: "{{ csrf_token() }}",
+                        currency: currency
+                    },
+                    success: function(response){
+                        if(response.success){
+                            location.reload();
+                        }
+                        else{
+                            alert(response.message);
+                            $('#page-loader').hide();
+                        }
+                    }
+                    
+                });
+            });
+        });
     </script>
 
     @stack('script')

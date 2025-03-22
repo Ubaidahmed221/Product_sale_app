@@ -46,7 +46,14 @@
                                     @endforeach
 
                                  </td>
-                            <td class="align-middle">${{ $cart->product->usd_price }}</td>
+                            <td class="align-middle">
+                                @if (getUserCurrency())
+                                Rs {{ $cart->product->usd_price }}
+                                 @else
+                              $ {{ $cart->product->usd_price }}
+                                  @endif
+                              
+                            </td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
@@ -63,7 +70,13 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle CartTotal ">${{ $cart->product->usd_price * $cart->quantity}}</td>
+                            <td class="align-middle CartTotal ">
+                                @if (getUserCurrency())
+                                Rs {{ $cart->product->pkr_price * $cart->quantity }}
+                                 @else
+                              $ {{ $cart->product->usd_price * $cart->quantity }}
+                                  @endif
+                            </td>
                             <td class="align-middle"><button class="btn btn-sm btn-primary cartDelete" data-id="{{$cart->id}}" >
                                 <i class="fa fa-times"></i></button></td>
                         </tr>
@@ -89,17 +102,38 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium cart-sub-total ">${{  getCartTotal() }}</h6>
+                            <h6 class="font-weight-medium cart-sub-total ">
+                                @if (getUserCurrency())
+                                Rs {{ getCartTotal() }}
+                                 @else
+                              $ {{ getCartTotal() }}
+                                  @endif
+                                
+                            
+                            </h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium">$0</h6>
+                            <h6 class="font-weight-medium">
+                                @if (getUserCurrency())
+                                Rs
+                                 @else
+                              $ 
+                                  @endif
+                                  0
+                            </h6>
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold cart-total">${{ getCartTotal() }}</h5>
+                            <h5 class="font-weight-bold cart-total">
+                                @if (getUserCurrency())
+                                Rs {{ getCartTotal() }}
+                                 @else
+                              $ {{ getCartTotal() }}
+                                  @endif                            
+                            </h5>
                         </div>
                         <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
                     </div>
