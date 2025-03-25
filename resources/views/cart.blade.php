@@ -2,6 +2,9 @@
 
 @section('content')
 
+    @php
+      $getSubTotal =  getCartSubTotal();
+    @endphp
 
     <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-5">
@@ -89,14 +92,22 @@
                 </table>
             </div>
             <div class="col-lg-4">
-                <form class="mb-5" action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control p-4" placeholder="Coupon Code">
+                {{-- <form class="mb-5" action=""> --}}
+                    <div class="coupon-box border p-3 justify-content-between align-items-center  {{ session('applied_coupon') ? 'd-flex' : 'd-none'  }}" style="border: 2px dashed green; border-radius: 5px" >
+                        <span>
+                            Coupon Applied; <strong id="appliedCode" >{{ session('applied_coupon') ? session('applied_coupon')['code'] : ''  }}</strong>
+                            <br>
+                            <span id="appliedOff">({{ session('applied_coupon') ? session('applied_coupon')['discount'].'%' : ''  }} Off )</span>
+                        </span>
+                        <button class="btn btn-danger btn-sm removeCoupon" > <i class="fas fa-times" ></i> </button>
+                    </div>
+                    <div class="input-group mb-5 {{ session('applied_coupon') ? 'd-none' : ''  }} applyCouponField ">
+                        <input type="text" class="form-control p-4" placeholder="Coupon Code" id="couponCodeInput" >
                         <div class="input-group-append">
-                            <button class="btn btn-primary">Apply Coupon</button>
+                            <button class="btn btn-primary" id="applyCouponBtn" >Apply Coupon</button>
                         </div>
                     </div>
-                </form>
+                {{-- </form> --}}
                 <div class="card border-secondary mb-5 cart-summary {{ count($cartitems) == 0 ? 'd-none' : ''}}">
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
@@ -106,9 +117,9 @@
                             <h6 class="font-weight-medium">Subtotal</h6>
                             <h6 class="font-weight-medium cart-sub-total ">
                                 @if (getUserCurrency())
-                                Rs {{ getCartSubTotal() }}
+                                Rs {{  $getSubTotal }}
                                  @else
-                              $ {{ getCartSubTotal() }}
+                              $ {{  $getSubTotal }}
                                   @endif
                                 
                             
@@ -237,6 +248,84 @@
                     alert(error.msg)
                 }
             });
+        });
+
+        // apply coupon or remove code 
+        $('#applyCouponBtn').click(function(){
+            var couponCode = $("#couponCodeInput").val();
+            if(!couponCode){
+                alert("Please enter COupon Code!");
+                return false;
+            }
+            $('#page-loader').show();
+            $.ajax({
+                url: "{{ route('cart.apply.coupon') }}",
+                type: "POST",
+                data: {
+                    _token: "{{csrf_token()}}",
+                    coupon_code : couponCode
+                },
+                success: function(response){
+            $('#page-loader').hide();
+
+                    if(response.success ){
+                        $('.cart-sub-total').text(response.sub_total);
+                        $('.cart-total').text(response.total);
+
+                        $('.applyCouponField').addClass('d-none');
+                        $('.coupon-box').addClass('d-flex');
+                        $('.coupon-box').removeClass('d-none');
+
+                        $('#appliedCode').html(response.code);
+                        $('#appliedOff').html( "(" + response.discount + "% Off)");
+                      
+                    }
+                    else{
+                       
+                        alert(response.msg);
+
+                    }
+                },
+                error: function(error){
+            $('#page-loader').hide();
+                    alert(error.msg)
+                }
+            });
+
+        });
+        $('.removeCoupon').click(function(){
+           
+            $('#page-loader').show();
+
+            $.ajax({
+                url: "{{ route('cart.remove.coupon') }}",
+                type: "DELETE",
+                data: {
+                    _token: "{{csrf_token()}}"
+                },
+                success: function(response){
+            $('#page-loader').hide();
+
+                    if(response.success ){
+                        $('.cart-sub-total').text(response.sub_total);
+                        $('.cart-total').text(response.total);
+                      
+                        $('.applyCouponField').removeClass('d-none');
+                        $('.coupon-box').removeClass('d-flex');
+                        $('.coupon-box').addClass('d-none');
+                    }
+                    else{
+                       
+                        alert(response.msg);
+
+                    }
+                },
+                error: function(error){
+            $('#page-loader').hide();
+                    alert(error.msg)
+                }
+            });
+
         });
     });
 

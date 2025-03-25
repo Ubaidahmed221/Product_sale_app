@@ -6,6 +6,7 @@ use App\Models\category;
 use App\Models\Banner;
 use App\Models\Cart;
 use App\Models\Country;
+use App\Models\Coupon;
 use App\Models\Variation;
 use App\Models\Offer;
 use App\Models\Product;
@@ -156,16 +157,8 @@ function getJustArrivedProducts(){
   }
   function getCartTotal(){
     try{
-      $cartItem = Cart::where('user_id',auth()->user()->id)
-      ->with('product')->get();
-      if(getUserCurrency()){
-        $cartTotal =  $cartItem->sum(fn($item) => $item->product->pkr_price * $item->quantity);
-
-      }else{
-
-        $cartTotal =  $cartItem->sum(fn($item) => $item->product->usd_price * $item->quantity);
-      }
-      return $cartTotal + shippingAmount() ;
+     
+      return getCartSubTotal() + shippingAmount() ;
 
     }
     catch(\Exception $e){
@@ -176,6 +169,7 @@ function getJustArrivedProducts(){
 
   function getCartSubTotal(){
     try{
+      $cartTotal = 0;
       $cartItem = Cart::where('user_id',auth()->user()->id)
       ->with('product')->get();
       if(getUserCurrency()){
@@ -184,6 +178,19 @@ function getJustArrivedProducts(){
       }else{
 
         $cartTotal =  $cartItem->sum(fn($item) => $item->product->usd_price * $item->quantity);
+      }
+      $coupon = session('applied_coupon');
+      if($coupon){
+        $validcoupon =  Coupon::where('code',$coupon['code'])->first();
+
+        if(!$validcoupon || $validcoupon->expires_at < now() || ($validcoupon->user_limit && $validcoupon->used_count >= $validcoupon->user_limit)){
+         session()->forget('applied_coupon');
+      }
+      else{
+        $cartSubTotal = $cartTotal;
+       $discountAmount = ($cartSubTotal *  $validcoupon->discount) / 100;
+       $cartTotal = max($cartSubTotal - $discountAmount,0);
+      }
       }
       return $cartTotal;
 

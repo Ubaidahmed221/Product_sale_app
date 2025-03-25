@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Coupon;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -160,6 +161,79 @@ class CartController extends Controller
                 'sub_total' =>  $currency.' '. getCartSubTotal(),
                 'total' =>  $currency.' '.getCartTotal(),
                 'count' => getCartCount()
+           
+            ]);
+
+        }
+        catch(\Exception $e){
+
+            return response()->json([
+                'success' => false,
+                'msg' => $e->getMessage(),
+           
+            ]);
+        }
+    }
+    public function applyCoupon(Request $request){
+        try{
+            $request->validate([
+                'coupon_code' => 'required|exists:coupons,code',
+            ]);
+
+          $coupon =  Coupon::where('code',$request->coupon_code)->first();
+            if(!$coupon || $coupon->expires_at < now() || ($coupon->user_limit && $coupon->used_count >= $coupon->user_limit)){
+                return response()->json([
+                    'success' => false,
+                    'msg' => "Coupons is invalid or expired",
+               
+                ]);
+            }
+
+            session(['applied_coupon' => $coupon]);
+            $currency = '';
+            if(getUserCurrency()){
+                $currency = 'Rs';
+            }else{
+                $currency = '$';
+            }
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Coupon Add Successfully',
+                'code' => $coupon->code,
+                'discount' => $coupon->discount,
+                'sub_total' =>  $currency.' '. getCartSubTotal(),
+                'total' =>  $currency.' '.getCartTotal()
+           
+            ]);
+
+        }
+        catch(\Exception $e){
+
+            return response()->json([
+                'success' => false,
+                'msg' => $e->getMessage(),
+           
+            ]);
+        }
+    }
+
+    public function removeCoupon(Request $request){
+        try{
+          
+            session()->forget('applied_coupon');
+            $currency = '';
+            if(getUserCurrency()){
+                $currency = 'Rs';
+            }else{
+                $currency = '$';
+            }
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Remove Remove Successfully',
+                'sub_total' =>  $currency.' '. getCartSubTotal(),
+                'total' =>  $currency.' '.getCartTotal()
            
             ]);
 

@@ -65,6 +65,8 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
     Route::delete('/cart',[CartController::class,'destory'] )->name('cart.destory');
     Route::put('/cart',[CartController::class,'update'] )->name('cart.update');
     Route::put('/currency-update',[AuthController::class,'CurrencyUpdate'] )->name('user.currency.update');
+    Route::post('/apply-coupon',[CartController::class,'applyCoupon'] )->name('cart.apply.coupon');
+    Route::delete('/apply-coupon',[CartController::class,'removeCoupon'] )->name('cart.remove.coupon');
 
 
 });
