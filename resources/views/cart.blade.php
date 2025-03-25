@@ -53,9 +53,9 @@
                                  </td>
                             <td class="align-middle">
                                 @if (getUserCurrency())
-                                Rs {{ $cart->product->pkr_price }}
+                                Rs {{ number_format($cart->product->pkr_price,2) }}
                                  @else
-                              $ {{ $cart->product->usd_price }}
+                              $ {{ number_format($cart->product->usd_price,2) }}
                                   @endif
                               
                             </td>
@@ -77,9 +77,9 @@
                             </td>
                             <td class="align-middle CartTotal ">
                                 @if (getUserCurrency())
-                                Rs {{ $cart->product->pkr_price * $cart->quantity }}
+                                Rs {{ number_format($cart->product->pkr_price * $cart->quantity,2) }}
                                  @else
-                              $ {{ $cart->product->usd_price * $cart->quantity }}
+                              $ {{ number_format($cart->product->usd_price * $cart->quantity,2) }}
                                   @endif
                             </td>
                             <td class="align-middle"><button class="btn btn-sm btn-primary cartDelete" data-id="{{$cart->id}}" >
@@ -97,7 +97,7 @@
                         <span>
                             Coupon Applied; <strong id="appliedCode" >{{ session('applied_coupon') ? session('applied_coupon')['code'] : ''  }}</strong>
                             <br>
-                            <span id="appliedOff">({{ session('applied_coupon') ? session('applied_coupon')['discount'].'%' : ''  }} Off )</span>
+                            <span id="appliedOff">({{ session('applied_coupon') ? number_format(session('applied_coupon')['discount'],2).'%' : ''  }} Off )</span>
                         </span>
                         <button class="btn btn-danger btn-sm removeCoupon" > <i class="fas fa-times" ></i> </button>
                     </div>

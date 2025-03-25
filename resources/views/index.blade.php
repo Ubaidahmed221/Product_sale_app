@@ -87,13 +87,13 @@
                     <div class="d-flex justify-content-center">
                         @if (getUserCurrency())
                             
-                        <h6>Rs {{ $product->pkr_price }}</h6>
-                        <h6 class="text-muted ml-2"><del>Rs {{ $product->pkr_price }}</del></h6>
+                        <h6>Rs {{ number_format($product->pkr_price,2) }}</h6>
+                        <h6 class="text-muted ml-2"><del>Rs {{ number_format($product->pkr_price,2) }}</del></h6>
 
                         @else
                         
-                        <h6>${{ $product->usd_price }}</h6>
-                        <h6 class="text-muted ml-2"><del>${{ $product->usd_price }}</del></h6>
+                        <h6>${{ number_format($product->usd_price,2) }}</h6>
+                        <h6 class="text-muted ml-2"><del>${{ number_format($product->usd_price,2) }}</del></h6>
                         @endif
                     </div>
                 </div>

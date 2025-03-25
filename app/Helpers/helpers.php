@@ -158,7 +158,7 @@ function getJustArrivedProducts(){
   function getCartTotal(){
     try{
      
-      return getCartSubTotal() + shippingAmount() ;
+      return number_format(getCartSubTotal() + shippingAmount(),2);
 
     }
     catch(\Exception $e){
@@ -192,7 +192,7 @@ function getJustArrivedProducts(){
        $cartTotal = max($cartSubTotal - $discountAmount,0);
       }
       }
-      return $cartTotal;
+      return number_format($cartTotal,2);
 
     }
     catch(\Exception $e){
@@ -245,7 +245,7 @@ function getJustArrivedProducts(){
       if($shippingZone){
         $shippingCost = getUserCurrency() ? $shippingZone->shipping_cost_pkr : $shippingZone->shipping_cost_usd; 
       }
-      return $shippingCost;
+      return number_format($shippingCost,2);
 
     }
     catch(\Exception $e){

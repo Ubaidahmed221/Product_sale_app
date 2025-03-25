@@ -114,10 +114,10 @@ class CartController extends Controller
             $currency = '';
             if(getUserCurrency()){
                 $currency = 'Rs';
-                $cartTotal = $currency . ' '. $product->pkr_price * $request->quantity;
+                $cartTotal = $currency . ' '. number_format($product->pkr_price * $request->quantity,2);
             }else{
                 $currency = '$';
-                $cartTotal = $currency . ' '. $product->usd_price * $request->quantity;
+                $cartTotal = $currency . ' '. number_format($product->usd_price * $request->quantity,2);
            
             }
 
@@ -201,7 +201,7 @@ class CartController extends Controller
                 'success' => true,
                 'msg' => 'Coupon Add Successfully',
                 'code' => $coupon->code,
-                'discount' => $coupon->discount,
+                'discount' => number_format($coupon->discount,2),
                 'sub_total' =>  $currency.' '. getCartSubTotal(),
                 'total' =>  $currency.' '.getCartTotal()
            

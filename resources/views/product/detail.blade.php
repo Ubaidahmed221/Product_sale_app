@@ -68,9 +68,9 @@
 
                 <h3 class="font-weight-semi-bold mb-4">
                     @if (getUserCurrency())
-                   Rs {{ $product->pkr_price }}
+                   Rs {{ number_format($product->pkr_price,2) }}
                     @else
-                 ${{ $product->usd_price }}
+                 ${{ number_format($product->usd_price,2) }}
                      @endif
                 
                 </h3>
