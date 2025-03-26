@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\VariationController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\OfferController;
+use App\Http\Controllers\Admin\PriceFilterController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\CartController;
@@ -135,6 +136,12 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
       Route::put('/coupon',[CouponController::class,'update'] )->name('admin.coupon.update');
       Route::delete('/coupon',[CouponController::class,'destroy'] )->name('admin.coupon.destroy');
     
+    // Price Filter
+    Route::get('/admin/price-filter',[PriceFilterController::class,'index'] )->name('admin.price.filter');
+    Route::post('/price-filter',[PriceFilterController::class,'store'] )->name('admin.price.filter.store');
+    Route::put('/price-filter',[PriceFilterController::class,'update'] )->name('admin.price.filter.update');
+    Route::delete('/price-filter',[PriceFilterController::class,'destroy'] )->name('admin.price.filter.destroy');
+
 
 });
 Route::post('/subscribe',[SubscriberController::class,'store'] )->name('subscribe');
