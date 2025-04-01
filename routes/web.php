@@ -18,6 +18,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProductController as websiteProductController;
+use App\Http\Controllers\ShopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -148,7 +149,6 @@ Route::post('/subscribe',[SubscriberController::class,'store'] )->name('subscrib
 Route::get('/unsubscribe/{token}',[SubscriberController::class,'unsubscribe'] )->name('unsubscribe');
 Route::get('/detail/{string}',[websiteProductController::class,'detail'] )->name('product.detail');
 Route::post('/states',[Controller::class,'states'] )->name('states');
-Route::get('/shop', function(){
-    return 'shop';
-} )->name('shop');
+Route::get('/shop',[ShopController::class,'index'])->name('shop');
+Route::get('/shop/filter',[ShopController::class,'filterProduct'])->name('shop.filter');
 

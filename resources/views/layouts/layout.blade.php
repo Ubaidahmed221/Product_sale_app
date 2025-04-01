@@ -130,6 +130,41 @@
                     
                 });
             });
+             // add to cart
+        $(document).on("click",".add-to-cart",function(){
+            let obj = $(this);
+            $(obj).html(`<div class="spinner-border text-danger"></div>`);
+            $(obj).prop('disabled',true);
+         
+            var productId = $(this).data('product-id');
+
+            $.ajax({
+                url: "{{ route('cart.store') }}",
+                type: "POST",
+                data: {
+                    _token: "{{csrf_token()}}",
+                    product_id: productId,
+                    quantity: 1
+                },
+                success: function(response){
+                    $(obj).html(`<i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart`);
+                    $(obj).prop('disabled',false);
+
+                    alert(response.msg);
+                    if(response.success && response.cart_added){
+                      var count =  $('.cart-badge-count').text();
+                      $('.cart-badge-count').text(parseInt(count) + 1);
+                    }
+                },
+                error: function(error){
+                    $(obj).html(`<i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart`);
+                    $(obj).prop('disabled',false);
+                    alert(error.msg)
+                }
+            });
+
+
+        });
         });
     </script>
 

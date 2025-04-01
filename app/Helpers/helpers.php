@@ -9,7 +9,9 @@ use App\Models\Country;
 use App\Models\Coupon;
 use App\Models\Variation;
 use App\Models\Offer;
+use App\Models\PriceFilter;
 use App\Models\Product;
+use App\Models\ProductVariation;
 use App\Models\ShippingZone;
 
 function getAppData($select){
@@ -250,6 +252,86 @@ function getJustArrivedProducts(){
     }
     catch(\Exception $e){
         return 0;
+
+    }
+  }
+
+  function getPriceFilter(){
+    try{
+
+    $priceColumn =  getUserCurrency() ? 'pkr_price' :  'usd_price';
+
+   $pricefilter = PriceFilter::orderBy('min_price','ASC')->get();
+   foreach($pricefilter as $filter){
+    $filter->product_count = Product::whereBetween($priceColumn,[$filter->min_price,$filter->max_price])
+    ->whereNull('deleted_at')
+    ->where('stock','>',0)
+    ->count();
+
+   }
+   return $pricefilter;
+    }
+    catch(\Exception $e){
+      return [];
+
+    }
+  }
+  function totalProductCount(){
+    try{
+
+    $productCount = Product::whereNull('deleted_at')
+    ->where('stock','>',0)
+    ->count();
+
+   return $productCount;
+    }
+    catch(\Exception $e){
+      return 0;
+
+    }
+  }
+  function getVariationFilter(){
+    try{
+   $variation =  Variation::with([
+        'values' => function($query){
+          $query->withCount([
+            'productVariation as product_count' => function($query){
+              $query->join('products','products_variations.product_id','=','products.id')
+              ->whereNull('products.deleted_at')
+              ->where('products.stock','>',0);
+            }
+          ]);
+        }
+        ])->get();
+   return $variation;
+    }
+    catch(\Exception $e){
+      return [];
+
+    }
+  }
+  function getVariationProductCount($variationId){
+    try{
+     
+      try {
+        $productCount = ProductVariation::with('product')
+            ->where('variation_id', $variationId)
+            ->whereHas('products', function ($query) {
+                $query->whereNull('deleted_at') // Agar soft delete enabled hai
+                      ->where('stock', '>', 0); // Sirf available stock wale products
+            })
+            ->distinct('product_id')
+            ->count('product_id');
+
+        return $productCount;
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+
+   return $productCount;
+    }
+    catch(\Exception $e){
+      return 0;
 
     }
   }

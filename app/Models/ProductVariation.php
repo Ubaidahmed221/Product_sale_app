@@ -13,7 +13,7 @@ class ProductVariation extends Model
     protected $fillable = ['product_id','variation_id','variation_value_id'];
 
     public function products(){
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id');
     }
     public function variation(){
         return $this->belongsTo(Variation::class);
