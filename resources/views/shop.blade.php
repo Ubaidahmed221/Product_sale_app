@@ -53,15 +53,15 @@
                 <div class="border-bottom mb-4 pb-4">
                     <h5 class="font-weight-semi-bold mb-4">Filter by {{ ucfirst($variation->name) }}</h5>
                     <form>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        {{-- <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="{{ strtolower($variation->name) }}-all">
                             <label class="custom-control-label" for="price-all">All {{ ucfirst($variation->name) }}</label>
                             <span class="badge border font-weight-normal">{{getVariationProductCount($variation->id)}}</span>
-                        </div>
+                        </div> --}}
                         @foreach ($variation->values as $key => $value )
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="{{ strtolower($variation->name) }}-{{$key}}"
-                            name="{{strtolower($variation->name)}}[]" value="{{$value->value}}" >
+                            <input type="checkbox" class="custom-control-input variation-filter" id="{{ strtolower($variation->name) }}-{{$key}}"
+                            name="variation[]" value="{{$value->value}}" >
                             <label class="custom-control-label" for="{{ strtolower($variation->name) }}-{{$key}}">{{ ucfirst($value->value) }}</label>
                             <span class="badge border font-weight-normal">{{ $value->product_count }}</span>
                         </div>
@@ -81,12 +81,12 @@
 
         <!-- Shop Product Start -->
         <div class="col-lg-9 col-md-12" id="outer-column">
-            <div class="row pb-3" id="product-list" >
+            <div class="row pb-3"  >
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <form action="">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by name">
+                                <input type="text" id="search-input" class="form-control" placeholder="Search by name">
                                 <div class="input-group-append">
                                     <span class="input-group-text bg-transparent text-primary">
                                         <i class="fa fa-search"></i>
@@ -95,20 +95,24 @@
                             </div>
                         </form>
                         <div class="dropdown ml-4">
-                            <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                            <button class="btn border dropdown-toggle" type="button" id="sort-dropdown" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
                                         Sort by
                                     </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                <a class="dropdown-item" href="#">Latest</a>
-                                <a class="dropdown-item" href="#">Popularity</a>
-                                <a class="dropdown-item" href="#">Best Rating</a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sort-dropdown">
+                                <a class="dropdown-item sort-option active" data-sort="latest" href="#">Latest</a>
+                                <a class="dropdown-item sort-option"  data-sort="oldest" href="#">Oldest</a>
+                                <a class="dropdown-item sort-option"  data-sort="popularity" href="#">Popularity</a>
+                                <a class="dropdown-item sort-option"  data-sort="rating" href="#">Best Rating</a>
                             </div>
                         </div>
                     </div>
                 </div>
                
                 
+            </div>
+            <div class="row pb-3" id="product-list" >
+
             </div>
            
         </div>
@@ -122,6 +126,8 @@
 
 <script>
     $(document).ready(function(){
+
+        let selectedSort = "latest";
 
         $("#price-all").on("change", function(){
            if($(this).is(":checked")){
@@ -140,7 +146,7 @@
            fetchfilteredProducts();
         });
         
-        function fetchfilteredProducts(){
+        function fetchfilteredProducts(page = 1){
 
             $(".appendData").remove();
 
@@ -154,9 +160,19 @@
             $(".price-filter:checked").each(function(){
                 priceFilter.push($(this).val());
             });
+            var variationFilter = [];
+            $('input[name^="variation"]:checked').each(function(){
+                variationFilter.push($(this).val());
+            });
+
+         var searchQuery = $("#search-input").val();
 
             var formdata = {
-                price: priceFilter
+                price: priceFilter,
+                variations: variationFilter,
+                page: page,
+                sort: selectedSort,
+                search: searchQuery
             }
 
             $.ajax({
@@ -167,7 +183,9 @@
                  
                     if(response.success ){
                         
-                            $("#product-list").append(response.html);
+                            // $("#product-list").append(response.html);
+                            $("#product-list").html(response.html);
+
                     }else{
                         alert(response.message);
                     }
@@ -180,6 +198,35 @@
             });
         }
         fetchfilteredProducts();
+
+        $(".variation-filter").on("change",function(){
+        fetchfilteredProducts();
+
+        });
+
+        $(document).on("click",".pagination a",function(e){
+            e.preventDefault();
+
+          var page =  $(this).attr("href").split('page=')[1];
+          fetchfilteredProducts(page);
+        });
+
+        let searchTimeout;
+        $("#search-input").on("keyup",function(){
+            clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(() => {
+                fetchfilteredProducts();
+                
+            }, 500);
+        });
+
+        $(".sort-option").on("click",function(e){
+            e.preventDefault();
+            $(".sort-option").removeClass("active");
+            $(this).addClass("active");
+            selectedSort =  $(this).data("sort");
+            fetchfilteredProducts();
+        });
     });
 </script>
 
