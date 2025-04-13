@@ -74,4 +74,10 @@ class Product extends Model
     public function review(){
         return $this->hasMany(Review::class);
     }
+    public function scopeTrandy($query){
+        return $query->whereNull('deleted_at')
+        ->withAvg('review','rating')
+        ->having('review_avg_rating','>=',4)
+        ->orderByDesc('review_avg_rating');
+    }
 }

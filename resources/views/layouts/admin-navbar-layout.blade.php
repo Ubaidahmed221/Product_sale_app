@@ -34,6 +34,9 @@
     <li>
         <a href="{{ route('admin.price.filter') }}"><span class="fa fa-filter mr-3"></span> Price Filter </a>
     </li>
+    <li>
+        <a href="{{ route('admin.gateway') }}"><span class="fa fa-credit-card mr-3"></span> Payment Gateways </a>
+    </li>
       <li>
         <a href="#" class="logout-btn" ><span class="fa fa-sign-out mr-3 "></span>Log Out </a>
     </li>

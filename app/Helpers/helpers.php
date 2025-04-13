@@ -9,6 +9,7 @@ use App\Models\Country;
 use App\Models\Coupon;
 use App\Models\Variation;
 use App\Models\Offer;
+use App\Models\PaymentGateway;
 use App\Models\PriceFilter;
 use App\Models\Product;
 use App\Models\ProductVariation;
@@ -335,4 +336,28 @@ function getJustArrivedProducts(){
 
     }
   }
+
+  function getTrandyProducts(){
+      try {
+      
+        return Product::trandy()->take(8)->with('firstImage')->get();
+    } 
+
+    catch(\Exception $e){
+      return [];
+
+    }
+  }
+
+  function getPaymentGateways(){
+    try {
+    
+      return PaymentGateway::where('is_enabled',1)->get();
+  } 
+
+  catch(\Exception $e){
+    return [];
+
+  }
+}
 ?>
