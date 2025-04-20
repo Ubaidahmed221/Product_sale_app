@@ -51,4 +51,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function addresses(){
+        return $this->hasMany(Address::class);
+    }
+    public function billingAddresses(){
+        return $this->hasOne(Address::class)->where('type','billing');
+    }
+    public function shippingAddresses(){
+        return $this->hasOne(Address::class)->where('type','shipping');
+    }
 }

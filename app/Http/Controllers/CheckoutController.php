@@ -14,7 +14,13 @@ class CheckoutController extends Controller
          if(count($cartitems) == 0){
             return redirect()->route('cart');
          }
-            return view('checkout',compact('cartitems'));
+
+       $user =  auth()->user();
+            return view('checkout',
+            ['cartitems' => $cartitems,
+             'billing' => $user->billingAddresses,
+             'shipping' => $user->shippingAddresses
+        ]);
         }
         catch(\Exception $e){
             return abort(404);
