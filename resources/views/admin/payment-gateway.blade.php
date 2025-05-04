@@ -12,6 +12,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
+                <th scope="col">Type</th>
                 <th scope="col">Status</th> 
                 <th scope="col">Action</th>
             </tr>
@@ -22,6 +23,7 @@
             <tr>
                 <th scope="row">{{ $gateway->id }}</th>
                 <td>{{$gateway->name }}</td>   
+                <td>{{ ($gateway->type == "online" )? 'Online' : 'Cash On Delivery' }}</td>   
                 <td>{{$gateway->is_enabled ? 'On' : 'Off'}}</td>   
                  
                 <td>
@@ -54,6 +56,13 @@
                          <label>Name</label>
                          <input type="text" class="form-control" name="name"  placeholder="Name " required>
                      </div>
+                     <div class="form-group">
+                        <label>Type</label>
+                        <select name="type" class="form-control" required>
+                            <option value="online" selected >Online</option>
+                            <option value="cod" >Cash on Delivery</option>
+                        </select>
+                    </div>
                      <div class="form-group">
                         <label>Status</label>
                         <select name="is_enabled" class="form-control">
@@ -92,6 +101,13 @@
                     <div class="form-group">
                         <label>Name</label>
                         <input type="text" class="form-control" name="name" id="name"  placeholder="Name " required>
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select name="type" class="form-control" id="type" required>
+                            <option value="online"  >Online</option>
+                            <option value="cod" >Cash on Delivery</option>
+                        </select>
                     </div>
                     <div class="form-group">
                        <label>Status</label>
@@ -173,6 +189,7 @@
      
          $('#update_id').val(obj.id);
          $('#name').val(obj.name);
+         $('#type').val(obj.type);
          $('#is_enabled').val(obj.is_enabled);
  
 

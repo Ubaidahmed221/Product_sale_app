@@ -9,6 +9,6 @@ class PaymentGateway extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','is_enabled'];
+    protected $fillable = ['name','type','is_enabled'];
     
 }

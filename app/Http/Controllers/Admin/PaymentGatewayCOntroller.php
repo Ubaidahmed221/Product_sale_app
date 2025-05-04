@@ -26,6 +26,7 @@ class PaymentGatewayCOntroller extends Controller
         try {
             $validatedData =  $request->validate([  
                 'name' => 'required|unique:payment_gateways,name',
+                'type' => 'required|string',
                 'is_enabled' => 'required'
              
             ]);
@@ -48,10 +49,12 @@ class PaymentGatewayCOntroller extends Controller
         try {
             $validatedData =  $request->validate([
                 'id' => 'required|exists:payment_gateways,id',
+
               'name' => [
                 'required',
                 Rule::unique('payment_gateways')->ignore($request->id)
                 ],
+                'type' => 'required|string',
                 'is_enabled' => 'required'
              
             ]);
