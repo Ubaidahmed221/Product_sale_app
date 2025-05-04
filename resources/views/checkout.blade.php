@@ -17,6 +17,8 @@
 
     <!-- Checkout Start -->
     <div class="container-fluid pt-5">
+        <form id="place-order-form" >
+            @csrf
         <div class="row px-xl-5">
             <div class="col-lg-8">
                 <div class="mb-4">
@@ -25,22 +27,31 @@
                         <div class="col-md-6 form-group">
                             <label>First Name</label>
                             <input class="form-control" name="first_name" value="{{old('first_name', $billing->first_name ?? '')}}" type="text" placeholder="John">
+                            <small class="text-danger error-first_name" ></small>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Last Name</label>
                             <input class="form-control" name="last_name" value="{{old('last_name', $billing->last_name ?? '')}}" type="text" placeholder="Doe">
+                            <small class="text-danger error-last_name" ></small>
+                      
                         </div>
                         <div class="col-md-6 form-group">
                             <label>E-mail</label>
                             <input class="form-control" name="email" value="{{old('email', $billing->email ?? '')}}" type="text" placeholder="example@email.com">
+                            <small class="text-danger error-email" ></small>
+
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Mobile No</label>
                             <input class="form-control" name="phone" value="{{old('phone', $billing->phone ?? '')}}" type="text" placeholder="+123 456 789">
+                            <small class="text-danger error-phone" ></small>
+
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Address Line 1</label>
                             <input class="form-control" name="address_1" value="{{old('address_1', $billing->address_1 ?? '')}}" type="text" placeholder="123 Street">
+                            <small class="text-danger error-address_1" ></small>
+
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Address Line 2</label>
@@ -54,20 +65,28 @@
                                     <option value="{{$country->iso2}}"  {{old('country', $billing->country ?? '') == $country->iso2 ? 'selected' : '' }} >{{$country->name}}</option>
                                 @endforeach
                               </select>
+                              <small class="text-danger error-country" ></small>
+
                         </div>
                         <div class="col-md-6 form-group">
                             <label>City</label>
                             <input class="form-control" name="city" value="{{old('city', $billing->city ?? '')}}" type="text" placeholder="New York">
+                            <small class="text-danger error-city" ></small>
+                       
                         </div>
                         <div class="col-md-6 form-group">
                             <label>State</label>
                             <select class="custom-select" id="billing_state" name="state" >
-                                <option >Select State</option>
+                                <option value="">Select State</option>
                             </select>
+                            <small class="text-danger error-state" ></small>
+
                         </div>
                         <div class="col-md-6 form-group">
                             <label>ZIP Code</label>
                             <input class="form-control" name="zip" value="{{old('zip', $billing->zip ?? '')}}" type="text" placeholder="123">
+                            <small class="text-danger error-zip" ></small>
+                       
                         </div>
                         
                         <div class="col-md-12 form-group">
@@ -79,6 +98,7 @@
                     </div>
                 </div>
                 <div class="collapse mb-4" id="shipping-address">
+                    <p><input type="checkbox" id="same_address">same as billing address.</p>
                     <h4 class="font-weight-semi-bold mb-4">Shipping Address</h4>
                     <div class="row">
                         <div class="col-md-6 form-group">
@@ -196,20 +216,23 @@
                             
                         <div class="form-group">
                             <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment" id="{{ strtolower($paymenyName->name) }}">
+                                <input type="radio" class="custom-control-input" value="{{ $paymenyName->id }}" name="payment" id="{{ strtolower($paymenyName->name) }}">
                                 <label class="custom-control-label" for="{{ strtolower($paymenyName->name) }}">{{ $paymenyName->name }}</label>
                             </div>
                         </div>
-                        @endforeach
+                        @endforeach 
+                        <small class="text-danger error-payment" ></small>
+
                       
                        
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
-                        <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Place Order</button>
+                        <button type="submit" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Place Order</button>
                     </div>
                 </div>
             </div>
         </div>
+    </form>
     </div>
     <!-- Checkout End -->
 
@@ -336,6 +359,84 @@
                 }
             });
         }
+
+        $("#same_address").change(function(){
+            if($(this).is(':checked')){
+                $('[name="shipping_first_name"]').val($('[name="first_name"]').val());
+                $('[name="shipping_last_name"]').val($('[name="last_name"]').val());
+                $('[name="shipping_email"]').val($('[name="email"]').val());
+                $('[name="shipping_phone"]').val($('[name="phone"]').val());
+                $('[name="shipping_address_1"]').val($('[name="address_1"]').val());
+                $('[name="shipping_address_2"]').val($('[name="address_2"]').val());
+             
+                $('[name="shipping_city"]').val($('[name="city"]').val());
+                $('[name="shipping_zip"]').val($('[name="zip"]').val());
+
+
+              let billing_country =  $('[name="country"]').val();
+              $('[name="shipping_country"]').val(billing_country).trigger('change');
+
+              setTimeout(() => {
+                let billingState =  $('[name="state"]').val();
+                $('[name="shipping_state"]').val(billingState); 
+              }, 500);
+
+
+            }
+            else{
+                $('[name="shipping_first_name"]').val('{{old('shipping_first_name', $shipping->first_name ?? '')}}');
+                $('[name="shipping_last_name"]').val('{{old('shipping_last_name', $shipping->last_name ?? '')}}');
+                $('[name="shipping_email"]').val('{{old('shipping_email', $shipping->email ?? '')}}');
+                $('[name="shipping_phone"]').val('{{old('shipping_phone', $shipping->phone ?? '')}}');
+                $('[name="shipping_address_1"]').val('{{old('shipping_address_1', $shipping->address_1 ?? '')}}');
+                $('[name="shipping_address_2"]').val('{{old('shipping_address_2', $shipping->address_2 ?? '')}}');
+             
+                $('[name="shipping_city"]').val('{{old('shipping_city', $shipping->city ?? '')}}');
+                $('[name="shipping_zip"]').val('{{old('shipping_zip', $shipping->zip ?? '')}}');
+                $('[name="shipping_country"]').val('{{old('shipping_country', $shipping->country ?? '')}}').trigger('change');
+
+
+              setTimeout(() => {
+                $('[name="shipping_state"]').val('{{old('shipping_state', $shipping->state ?? '')}}');
+
+              }, 500);
+            }
+        });
+
+        // place Order 
+        $("#place-order-form").submit(function(e){
+            e.preventDefault();
+            $("small.text-danger").text("");
+
+            var formData = $(this).serialize();
+            $.ajax({
+                url: "{{ route('place.order') }}",
+                type: "POST",
+                data: formData,
+                success: function(response){
+                    if(response.success){
+                        alert(response.message);
+                        location.reload();
+                    }else{
+                      alert(response.message || "something went wrong");
+                    }
+                },
+                error: function(xhr){
+                    if(xhr.status === 422){
+                        let errors = xhr.responseJSON.errors;
+                        $.each(errors, function(field, messages) {
+                            $(".error-" + field).text(messages[0]);
+                        });
+                    }
+                    else{
+                        alert("Unexprected error occured. please try again.")
+                    }
+                }
+            });
+
+
+
+        }); 
     });
 
 </script>

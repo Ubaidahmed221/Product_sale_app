@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\OrderCOntroller;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProductController as websiteProductController;
@@ -73,6 +74,7 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
     Route::delete('/apply-coupon',[CartController::class,'removeCoupon'] )->name('cart.remove.coupon');
 
     Route::get('/checkout',[CheckoutController::class,'index'] )->name('checkout');
+    Route::post('/place-order',[OrderCOntroller::class,'store'] )->name('place.order'); 
 
 
 });
