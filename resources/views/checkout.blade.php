@@ -239,6 +239,9 @@
 
 @endsection
 @push('script')
+
+<script src="https://js.stripe.com/v3/" ></script>
+
 <script>
     $(document).ready(function(){
 
@@ -406,6 +409,7 @@
         // place Order 
         $("#place-order-form").submit(function(e){
             e.preventDefault();
+            $('#page-loader').show();
             $("small.text-danger").text("");
 
             var formData = $(this).serialize();
@@ -414,10 +418,22 @@
                 type: "POST",
                 data: formData,
                 success: function(response){
-                    if(response.success){
+            $('#page-loader').hide();
+
+                    if(response.success && response.type == 0){
+
                         alert(response.message);
-                        location.reload();
-                    }else{
+                       window.location.href = "{{ route('thank-you',['id' => 'ORDER_ID'])}}".replace('ORDER_ID',response.data.id);
+                    }
+                    else if(response.success &&  response.type == 1){
+                        console.log(response);
+                        const paymentMethod = response.gateway;
+                        if(paymentMethod == 'stripe'){
+                            console.log(paymentMethod);
+                            openStripeCheckout(response.session_id);
+                        }
+                    }
+                    else{
                       alert(response.message || "something went wrong");
                     }
                 },
@@ -438,6 +454,11 @@
 
         }); 
     });
-
+  function  openStripeCheckout(sessionId){
+     const stripe = Stripe("{{ config('services.stripe.key') }}");
+    stripe.redirectToCheckout({
+        sessionId: sessionId
+    });
+    }
 </script>
 @endpush

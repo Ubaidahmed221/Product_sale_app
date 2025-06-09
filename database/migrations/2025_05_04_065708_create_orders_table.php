@@ -20,11 +20,12 @@ return new class extends Migration
             $table->string('payment_method');
             $table->string('payment_status')->default('pending');
             $table->string('status')->default('pending');
-            
+            $table->string('currency')->comment('PKR Or USD Currency');
             $table->decimal('subtotal',10,2);
             $table->decimal('shipping_amount',10,2)->nullable();
             $table->decimal('total',10,2);
             $table->string('transaction_id')->nullable();
+            $table->string('stripe_session_id')->nullable();
 
             $table->timestamps();
         });

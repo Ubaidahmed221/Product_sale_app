@@ -18,10 +18,13 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\OrderCOntroller;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProductController as websiteProductController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,9 +61,11 @@ Route::post('/mail-verification',[AuthController::class,'mailVerification'])->na
 });
 
 Route::group(['middleware' => ['OnlyAuthenticated']], function(){
-    Route::get('/dashboard',function(){
-        return 'User Dashboard';
-    })->name('user.dashboard');
+    Route::get('/dashboard',[UserController::class,'account'])->name('user.dashboard');
+    Route::get('/dashboard/orders',[UserController::class,'orders'])->name('user.orders');
+    Route::get('/dashboard/address',[UserController::class,'address'])->name('user.address');
+    Route::get('/dashboard/change-password',[UserController::class,'changePassword'])->name('user.change-password');
+    Route::post('/dashboard/update',[UserController::class,'accountUpdate'])->name('user.account.update');
 
     Route::post('/review',[ReviewController::class,'store'] )->name('review.store');
     Route::post('/logout',[AuthController::class,'logout'] )->name('logout');
@@ -74,7 +79,17 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
     Route::delete('/apply-coupon',[CartController::class,'removeCoupon'] )->name('cart.remove.coupon');
 
     Route::get('/checkout',[CheckoutController::class,'index'] )->name('checkout');
-    Route::post('/place-order',[OrderCOntroller::class,'store'] )->name('place.order'); 
+    Route::post('/place-order',[OrderCOntroller::class,'store'] )->name('place.order');
+
+    // payment method route
+    Route::get('/payment/success/{order}',[PaymentController::class,'success'] )->name('payment.success');
+    Route::get('/payment/cancel/{order}',[PaymentController::class,'cancel'] )->name('payment.cancel');
+    
+    Route::get('/payment/thank-you/{id}',[PaymentController::class,'thankYou'] )->name('thank-you');
+    // wishlist rout
+    Route::post('/wishlist/toggle',[WishlistController::class,'toggle'] )->name('wishlist.toggle');
+    Route::get('/wishlist',[WishlistController::class,'index'] )->name('wishlist');
+    Route::delete('/wishlist/remove',[WishlistController::class,'destory'] )->name('wishlist.destory');
 
 
 });

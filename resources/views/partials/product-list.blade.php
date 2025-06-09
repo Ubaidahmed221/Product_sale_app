@@ -22,6 +22,9 @@
         </div>
         <div class="card-footer d-flex justify-content-between bg-light border">
             <a href="{{ route('product.detail',\Crypt::encrypt($product->id)) }}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+            <a href="javascript:void(0)" class="wishlist-btn" data-id="{{$product->id}}" >
+              <i class="far fa-heart " ></i>
+            </a>
             <a  class="btn btn-sm text-dark p-0 add-to-cart" data-product-id="{{$product->id}}" ><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
         </div>
     </div>

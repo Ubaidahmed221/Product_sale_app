@@ -7,9 +7,13 @@ use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\PaymentGateway;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
 
 class OrderCOntroller extends Controller
 {
@@ -31,10 +35,11 @@ class OrderCOntroller extends Controller
     $order =   Order::create([
         'user_id' => $user->id,
         'billing_address' => $this->preparedAddressData($request),
-        'shipping_address' => $this->preparedAddressData($request,'shipping',$request->has("ship_to_different")),
+        'shipping_address' => $request->has("ship_to_different") ? $this->preparedAddressData($request,'shipping',$request->has("ship_to_different")) : NULL,
         'payment_status' => Order::PAYMENT_PENDING,
         'payment_method' => $paymentGateway->name,
         'status' => Order::STATUS_PENDING,
+        'currency' => getUserCurrency() ? 'pkr' : 'usd',
         'subtotal' => getCartSubTotal(),
         'shipping_amount' => shippingAmount(),
         'total' => getCartTotal(),
@@ -57,11 +62,13 @@ class OrderCOntroller extends Controller
        if($paymentGateway->type === 'cod'){
         return response()->json([
             'success' => true,
-            'message' => 'Order Place Successfully with COD!'
+            'type' => 0,
+            'message' => 'Order Place Successfully with COD!',
+            'data' => $order
         ]);
        }
        else{
-
+        return $this->handlePaymentGateway($paymentGateway->name,$order);
        }
 
         }
@@ -103,5 +110,48 @@ class OrderCOntroller extends Controller
 
     private function getProductPrice($cartItem){
         return getUserCurrency() ? $cartItem->product->pkr_price : $cartItem->product->usd_price;  
+    }
+
+    private function handlePaymentGateway($paymentMethod,$order){
+        $currency = getUserCurrency() ? 'pkr' : 'usd';
+
+        $paymentMethod  = strtolower($paymentMethod);
+
+        switch($paymentMethod){
+            case 'stripe':
+                    Stripe::setApiKey(config('services.stripe.secret'));
+                $session =  Session::create([
+                        'payment_method_types' => ['card'],
+                        'line_items' => [[
+                            'price_data' => [
+                                'currency' => $currency,
+                                'product_data' => [
+                                    'name' => 'Order #'.$order->id,
+                                ],
+                                'unit_amount' => intval($order->total * 100),
+                            ],
+                            'quantity' => 1,
+                        ]],
+                            'mode' => 'payment',
+                            'success_url' => route('payment.success',['order'=> $order->id]),
+                            'cancel_url' => route('payment.cancel',['order'=> $order->id])
+                        ]);
+                        $order->stripe_session_id = $session->id;
+                        $order->save();
+                        return response()->json([
+                            'success' => true,
+                            'type' => 1,
+                            'gateway' => $paymentMethod,
+                            'session_id' => $session->id,
+
+                        ]);
+
+            case 'paypal':
+                break;
+            default:
+                throw new Exception("Unsupported payment method: $paymentMethod");
+        }
+
+
     }
 }

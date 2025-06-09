@@ -165,6 +165,43 @@
 
 
         });
+
+        // wishlist  Add/remove
+        $(document).on("click",".wishlist-btn",function(){
+            var button = $(this);
+            var productId = $(this).data('id');
+
+            $.ajax({
+                url: "{{ route('wishlist.toggle') }}",
+                type: "POST",
+                data: {
+                    _token: "{{csrf_token()}}",
+                    product_id: productId,
+                },
+                success: function(response){
+                    alert(response.message);
+                    if(response.success ){
+                        var count = parseInt( $('.wishlist-badge-count').text());
+                    if(response.status == 1){
+                 
+                  $('.wishlist-badge-count').text(count + 1);
+                        button.find('i').removeClass('far').addClass('fas');
+                    }else{
+                       
+                        $('.wishlist-badge-count').text(count - 1);
+                        button.find('i').removeClass('fas').addClass('far');
+
+                    }
+                    }
+                },
+                error: function(error){
+                   
+                    alert("Something went Wrong..")
+                }
+            });
+
+
+        });
         });
     </script>
 

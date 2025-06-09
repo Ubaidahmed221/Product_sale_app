@@ -14,6 +14,7 @@ use App\Models\PriceFilter;
 use App\Models\Product;
 use App\Models\ProductVariation;
 use App\Models\ShippingZone;
+use App\Models\Wishlist;
 
 function getAppData($select){
 
@@ -119,6 +120,21 @@ function getJustArrivedProducts(){
         return 0;
       }
 
+    }
+    catch(\Exception $e){
+        return 0;
+
+    }
+  }
+  function getWishlistCount(){
+    try{
+
+      if(auth()->check()){
+      return  Wishlist::where('user_id',auth()->id())->count();
+      }
+      else{
+        return 0;
+      }
     }
     catch(\Exception $e){
         return 0;

@@ -13,6 +13,7 @@ class Order extends Model
     const STATUS_PROCESSING = 'processing';
     const STATUS_COMPLETED = 'completed';
     const STATUS_CANCELLED = 'cancelled';
+    const STATUS_FAILED = 'failed';
 
     const PAYMENT_PENDING = 'pending';
     const PAYMENT_SUCCESS = 'success';
@@ -26,9 +27,11 @@ class Order extends Model
         'payment_status',
         'status',
         'subtotal',
+        'currency',
         'shipping_amount',
         'total',
-        'transaction_id'
+        'transaction_id',
+        'stripe_session_id'
     ];
 
     protected $casts = [
