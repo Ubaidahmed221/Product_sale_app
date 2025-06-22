@@ -63,8 +63,11 @@ Route::post('/mail-verification',[AuthController::class,'mailVerification'])->na
 Route::group(['middleware' => ['OnlyAuthenticated']], function(){
     Route::get('/dashboard',[UserController::class,'account'])->name('user.dashboard');
     Route::get('/dashboard/orders',[UserController::class,'orders'])->name('user.orders');
+    Route::get('/dashboard/orders/{id}',[UserController::class,'orderInformation'])->name('user.orders.information');
     Route::get('/dashboard/address',[UserController::class,'address'])->name('user.address');
+    Route::post('/dashboard/address',[UserController::class,'Updateaddress'])->name('user.update.address');
     Route::get('/dashboard/change-password',[UserController::class,'changePassword'])->name('user.change-password');
+    Route::put('/dashboard/change-password',[UserController::class,'updatePassword'])->name('user.update.password');
     Route::post('/dashboard/update',[UserController::class,'accountUpdate'])->name('user.account.update');
 
     Route::post('/review',[ReviewController::class,'store'] )->name('review.store');

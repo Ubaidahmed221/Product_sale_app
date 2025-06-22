@@ -36,3 +36,6 @@
 
 
 @endsection
+@push('script')
+    @stack('child-script')
+@endpush

@@ -9,11 +9,11 @@
     <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">Thank Information</h1>
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Order # {{$order->id}}</h1>
             <div class="d-inline-flex">
                 <p class="m-0"><a href="{{route('index')}}">Home</a></p>
                 <p class="m-0 px-2">-</p>
-                <p class="m-0">Thank You For Your Order</p>
+                <p class="m-0">Order Information</p>
             </div>
         </div>
     </div>
@@ -34,6 +34,13 @@
                          'success text-white' : ($order->payment_status  === 'failed' ? 
                          'danger text-white' : 'secondary') }}" >
                   {{ ucfirst($order->payment_status) }} </span> 
+                </p>
+                <p>
+                    <strong>Order Status: </strong>
+                      <span class="badge bg-{{$order->status  === 'completed' ?
+                         'primary ' : ($order->status  === 'processing' ? 
+                         'info text-white' : (($order->status  === 'cancelled' || $order->status  === 'failed' ) ? 
+                         'danger text-white' : 'secondary') )  }}" >{{ $order->status }}</span>
                 </p>
                 <hr>
                 <h5>Billing Address</h5>
