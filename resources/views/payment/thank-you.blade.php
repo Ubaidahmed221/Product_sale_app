@@ -23,7 +23,9 @@
        <div class="container py-2">
         <div class="row ">
           <div class="col-md-8 bg-light p-4 shadow rounded offset-md-2" >
-            <h4 class="mb-4">Order Summery</h4>
+            <h4 class="mb-4">Order Summery
+                  <a href="{{route('user.orders.invoice',$order->id)}}" class="btn btn-primary btn-sm float-right btn-outline-primary text-white " >Download Invoice</a>
+            </h4>
             <p><strong>Order ID:</strong> {{$order->id}} </p>
             @if ($order->transaction_id)
             <p><strong>Transaction ID:</strong> {{$order->transaction_id}} </p>

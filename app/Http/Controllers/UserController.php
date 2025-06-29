@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class UserController extends Controller
@@ -157,5 +157,21 @@ class UserController extends Controller
         catch(\Exception $e){
             return back()->with(['error' => $e->getMessage()]);
          }
+    }
+
+       public function downloadInvoice(Order $order){
+        try{
+
+            if($order->user_id !== auth()->id()){
+                abort(403,"Unauthorized");
+            }
+
+
+             $pdf = Pdf::loadView('invoices.order', compact('order'));
+              return $pdf->download('invoice_user_order_'.$order->id.'.pdf');
+        }
+        catch(\Exception $e){
+           return abort(404,'something went wrong!');
+        }
     }
 }
