@@ -12,7 +12,7 @@ class AppController extends Controller
     public function index(){
         try{
            $data = AppData::first();
-           return view('admin.dashboard',compact('data'));
+           return view('admin.site-setting',compact('data'));
         }
         catch(\Exception $e){
             return abort(404,"Something Went Wrong");

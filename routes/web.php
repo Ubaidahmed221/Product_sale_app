@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\VariationController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\PaymentGatewayCOntroller;
 use App\Http\Controllers\Admin\PriceFilterController;
@@ -104,7 +105,8 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
         return redirect()->route('admin.dashboard');
     });
 
-    Route::get('/admin/dashboard',[AppController::class,'index'] )->name('admin.dashboard');
+    Route::get('/admin/dashboard',[DashboardController::class,'index'] )->name('admin.dashboard');
+    Route::get('/admin/site-setting',[AppController::class,'index'] )->name('admin.site-setting');
     Route::post('update-app-data',[AppController::class,'UpdateAppData'] )->name('UpdateAppData');
 
     // menu Route
