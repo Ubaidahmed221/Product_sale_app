@@ -438,6 +438,7 @@
                     }
                 },
                 error: function(xhr){
+                       $('#page-loader').hide();
                     if(xhr.status === 422){
                         let errors = xhr.responseJSON.errors;
                         $.each(errors, function(field, messages) {

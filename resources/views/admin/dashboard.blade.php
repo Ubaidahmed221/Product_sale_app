@@ -61,13 +61,13 @@
                 <tbody>
                     @foreach ($recentOrder as $order)
                             <tr>
-                                <th>{{$loop->iteration}}</th>
-                                <th># {{ $order->id}}</th>
-                                <th> {{ $order->user->name}}</th>
-                                <th> {{  ucfirst($order->status)}}</th>
-                                <th> {{  ucfirst($order->payment_status)}}</th>
-                                <th> {{ $order->currency == 'pkr' ? 'Rs' : '$' }} {{ $order->total }} </th>
-                                <th>{{ $order->created_at->format('d M Y') }}</th>
+                                <td>{{$loop->iteration}}</td>
+                                <td>#{{ $order->id}}</td>
+                                <td> {{ $order->user->name}}</td>
+                                <td> {{  ucfirst($order->status)}}</td>
+                                <td> {{  ucfirst($order->payment_status)}}</td>
+                                <td> {{ $order->currency == 'pkr' ? 'Rs' : '$' }} {{ $order->total }} </td>
+                                <td>{{ $order->created_at->format('d M Y') }}</td>
                             </tr>
                     @endforeach
                 </tbody>

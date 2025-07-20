@@ -41,6 +41,9 @@
         <a href="{{ route('admin.gateway') }}"><span class="fa fa-credit-card mr-3"></span> Payment Gateways </a>
     </li>
       <li>
+        <a href="{{ route('admin.orders.index') }}"><span class="fa fa-shopping-bag mr-3"></span> Orders </a>
+    </li>
+      <li>
         <a href="#" class="logout-btn" ><span class="fa fa-sign-out mr-3 "></span>Log Out </a>
     </li>
 

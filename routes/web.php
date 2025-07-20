@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OfferController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PaymentGatewayCOntroller;
 use App\Http\Controllers\Admin\PriceFilterController;
 use App\Http\Controllers\Admin\ProductController;
@@ -176,6 +177,9 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
      Route::put('/payment-gateway',[PaymentGatewayCOntroller::class,'update'] )->name('admin.gateway.update');
      Route::delete('/payment-gateway',[PaymentGatewayCOntroller::class,'destroy'] )->name('admin.gateway.destroy');
  
+     Route::get('/admin/orders',[AdminOrderController::class,'index'] )->name('admin.orders.index');
+     Route::get('/admin/orders/{order}',[AdminOrderController::class,'show'] )->name('admin.orders.show');
+
 
 });
 Route::post('/subscribe',[SubscriberController::class,'store'] )->name('subscribe');
