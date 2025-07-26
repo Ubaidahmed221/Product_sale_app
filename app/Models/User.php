@@ -29,7 +29,8 @@ class User extends Authenticatable
         'verification_token',
         'token_expires_at',
         'country',
-        'state'
+        'state',
+        'is_block',
     ];
 
     /**

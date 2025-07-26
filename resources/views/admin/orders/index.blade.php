@@ -34,7 +34,10 @@
                                 <td> {{  ucfirst($order->status)}}</td>
                                 <td> {{  ucfirst($order->payment_status)}}</td>
                                 <td>{{ $order->created_at->format('d M Y') }}</td>
-                                <td><a href="{{route('admin.orders.show',$order->id)}}"  class="btn btn-sm btn-primary" >Show</a></td>
+                                <td>
+                                    <a href="{{route('admin.orders.show',$order->id)}}"  class="btn btn-sm btn-primary" >Show</a>
+                                    <a href="{{route('admin.orders.invoice',$order->id)}}"  class="btn btn-sm btn-success" >Invoice</a>
+                                </td>
                             </tr>
                     @endforeach
                 </tbody>

@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\PaymentGatewayCOntroller;
 use App\Http\Controllers\Admin\PriceFilterController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ShippingController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Controller;
@@ -179,6 +180,13 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
  
      Route::get('/admin/orders',[AdminOrderController::class,'index'] )->name('admin.orders.index');
      Route::get('/admin/orders/{order}',[AdminOrderController::class,'show'] )->name('admin.orders.show');
+     Route::get('/admin/orders/{order}/invoice',[AdminOrderController::class,'downloadInvoice'] )->name('admin.orders.invoice');
+     Route::put('/admin/orders/{order}/status',[AdminOrderController::class,'updateStatus'] )->name('admin.orders.update.status');
+
+     // users 
+     Route::get('/admin/users',[AdminUserController::class,'index'] )->name('admin.users.index');
+     Route::post('/admin/users/{user}/toggle-block',[AdminUserController::class,'toggleBlock'] )->name('admin.users.toggle-block');
+     Route::delete('/admin/users/{user}',[AdminUserController::class,'destroy'] )->name('admin.users.destroy');
 
 
 });
