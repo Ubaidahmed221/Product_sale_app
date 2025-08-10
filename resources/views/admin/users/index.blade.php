@@ -3,6 +3,22 @@
 @section('content')
     <h2 class="mb-4">All Users</h2>
 
+    <form action="{{route('admin.users.index')}}" method="GET" class="mb-3" >
+        <div class="input-group w-25">
+            <input type="text" name="search" class="form-control" placeholder="Search by name or email" value="{{ request('search') }}">
+            <button class="btn btn-primary ml-3" type="submit">Search</button>
+        </div>
+
+    </form>
+
+    @if (request('search'))
+        <div class="alert alert-info">
+            Search results for: <strong>{{ request('search') }}</strong>
+        </div>
+        
+    @endif
+
+
      <table class="table table-bordered  " >
                 <thead>
                     <tr>
@@ -31,7 +47,7 @@
                                     @endif
                                 </td>
                                
-                                <td><a href="" class="btn btn-sm btn-outline-info">View Order</a></td>
+                                <td><a href="{{route('admin.users.orders',$user->id)}}" class="btn btn-sm btn-outline-info">View Order</a></td>
                                
                                 <td>
                                   <form action="{{route('admin.users.toggle-block',$user->id)}}" method="POST" style="display:inline-block;">
@@ -51,6 +67,12 @@
                                 </td>
                             </tr>
                     @endforeach
+                    @if (count($users) == 0)
+                        <tr>
+                            <td colspan="6" class="text-center">No users found</td>
+                        </tr>
+                        
+                    @endif
                 </tbody>
             </table>
             <div class="col-12 pb-1 d-flex justify-content-center">

@@ -11,8 +11,18 @@ class UserController extends Controller
     public function index(Request $request)
     {
         try {
+            $query = User::query();
+            $query->where('is_admin', 0);
+            if($request->input('search')) {
+                $search = $request->input('search');
+                $query->where(function($q) use ($search) {
+                    $q->where('name','like',"%$search%")
+                    ->orwhere('email','like',"%$search%");
+                });
 
-        $users =  User::where('is_admin',0)->latest()->paginate(10);
+            }
+
+        $users =  $query->latest()->paginate(10);
 
             return view('admin.users.index', compact('users'));
         } catch (\Exception $e) {
@@ -47,6 +57,16 @@ class UserController extends Controller
            
             return back()->with('error', $e->getMessage());
 
+        }
+    }
+
+    public function orders(User $user)
+    {
+        try {
+            $orders = $user->orders()->latest()->paginate(10);
+            return view('admin.users.orders', compact('user','orders'));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to retrieve user orders: ' . $e->getMessage());
         }
     }
 }

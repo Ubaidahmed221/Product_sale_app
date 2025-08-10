@@ -187,6 +187,7 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
      Route::get('/admin/users',[AdminUserController::class,'index'] )->name('admin.users.index');
      Route::post('/admin/users/{user}/toggle-block',[AdminUserController::class,'toggleBlock'] )->name('admin.users.toggle-block');
      Route::delete('/admin/users/{user}',[AdminUserController::class,'destroy'] )->name('admin.users.destroy');
+     Route::get('/admin/users/{user}/orders',[AdminUserController::class,'orders'] )->name('admin.users.orders');
 
 
 });
