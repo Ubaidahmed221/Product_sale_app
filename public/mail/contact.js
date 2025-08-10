@@ -15,9 +15,10 @@ $(function () {
             $this.prop("disabled", true);
 
             $.ajax({
-                url: "contact.php",
+                url: "/contact",
                 type: "POST",
                 data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
                     name: name,
                     email: email,
                     subject: subject,

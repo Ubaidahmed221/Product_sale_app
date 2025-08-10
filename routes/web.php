@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\OrderCOntroller;
 use App\Http\Controllers\PaymentController;
@@ -197,4 +198,6 @@ Route::get('/detail/{string}',[websiteProductController::class,'detail'] )->name
 Route::post('/states',[Controller::class,'states'] )->name('states');
 Route::get('/shop',[ShopController::class,'index'])->name('shop');
 Route::get('/shop/filter',[ShopController::class,'filterProduct'])->name('shop.filter');
+Route::get('/contact',[ContactController::class,'index'])->name('contact');
+Route::post('/contact',[ContactController::class,'store'])->name('contact.submit');
 
