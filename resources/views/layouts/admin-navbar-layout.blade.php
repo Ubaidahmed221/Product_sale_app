@@ -47,6 +47,9 @@
         <a href="{{ route('admin.users.index') }}"><span class="fa fa-user mr-3"></span> Users </a>
     </li>
       <li>
+        <a href="{{ route('admin.contact.index') }}"><span class="fa fa-phone mr-3"></span> Contact Message </a>
+    </li>
+      <li>
         <a href="#" class="logout-btn" ><span class="fa fa-sign-out mr-3 "></span>Log Out </a>
     </li>
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\VariationController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OfferController;
@@ -189,6 +190,12 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
      Route::post('/admin/users/{user}/toggle-block',[AdminUserController::class,'toggleBlock'] )->name('admin.users.toggle-block');
      Route::delete('/admin/users/{user}',[AdminUserController::class,'destroy'] )->name('admin.users.destroy');
      Route::get('/admin/users/{user}/orders',[AdminUserController::class,'orders'] )->name('admin.users.orders');
+
+    //  Contact
+     Route::get('/admin/contact',[AdminContactController::class,'index'])->name('admin.contact.index');
+     Route::get('/admin/contact/{contact}',[AdminContactController::class,'show'])->name('admin.contact.show');
+     Route::put('/admin/contact/{contact}',[AdminContactController::class,'update'])->name('admin.contact.update');
+     Route::delete('/admin/contact/{contact}',[AdminContactController::class,'destroy'])->name('admin.contact.distroy');
 
 
 });
