@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendProductPublishedMail;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductVariation;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
+
+
 
 class ProductController extends Controller
 {
@@ -84,7 +87,10 @@ class ProductController extends Controller
 
             }
             // Log::info($request->all());
-          
+            
+            // Dispatch the job to send email
+            // This will queue the email to be sent later
+          dispatch(new SendProductPublishedMail($product));
 
             return response()->json([
                 'success' => true,
