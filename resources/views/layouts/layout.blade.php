@@ -206,7 +206,63 @@
         });
     </script>
 
+    @if (auth()->check())
+            <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-messaging-compat.js"></script>
+<script>
+    const firebaseConfig = {
+        apiKey: "{{ env('FB_API_kEY') }}",
+        authDomain: "{{ env('FB_AUTH_DOMAIN') }}",
+        projectId: "{{env('FB_PROJECT_ID') }}",
+        storageBucket: "{{ env('FB_STORAGE_BUCKET') }}",
+        messagingSenderId: "{{ env('FB_MESSAGING_SENDER_ID') }}",
+        appId: "{{ env('FB_APP_ID') }}",
+    };
+
+    // Init Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Init Messaging
+    const messaging = firebase.messaging();
+
+    // Request Notification Permission
+    Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+            console.log("Notification permission granted.");
+
+            // Get FCM Token
+            messaging.getToken({
+                vapidKey: "{{ env('FB_VAPID_KEY') }}"
+            }).then((token) => {
+                console.log("FCM Token:", token);
+                fetch("{{ route('save.token') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        fcm_token: token
+                    }),
+                }).then(response => response.json())
+                  .then(data => {
+                      console.log("Token saved successfully:", data);
+                  })
+                  .catch(error => {
+                      console.error("Error saving token:", error);
+                  });
+            }).catch((error) => {
+                console.error("Error getting FCM token:", error);
+            });
+        } else {
+            console.log("Notification permission denied.");
+        }
+    });
+
+</script>
+    @endif
     @stack('script')
+
 </body>
 
 </html>

@@ -22,6 +22,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderCOntroller;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SubscriberController;
@@ -99,6 +100,8 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
     Route::post('/wishlist/toggle',[WishlistController::class,'toggle'] )->name('wishlist.toggle');
     Route::get('/wishlist',[WishlistController::class,'index'] )->name('wishlist');
     Route::delete('/wishlist/remove',[WishlistController::class,'destory'] )->name('wishlist.destory');
+
+    Route::post('/save-fcm_token',[NotificationController::class,'saveFcmToken'] )->name('save.token');
 
 
 });
