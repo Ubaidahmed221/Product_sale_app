@@ -259,6 +259,20 @@
         }
     });
 
+   messaging.onMessage((payload) => {
+    console.log("Message received.", payload);
+    alert(payload.notification.title + " - " + payload.notification.body);
+});
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    .then(function(registration) {
+        console.log('Service Worker registered with scope:', registration.scope);
+    }).catch(function(err) {
+        console.log('Service Worker registration failed:', err);
+    });
+}
+
 </script>
     @endif
     @stack('script')

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\sendPushNotificationJob;
 use App\Models\Order;
+use App\Services\GoogleAccessTokenServices;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -53,7 +55,9 @@ class OrderController extends Controller
 
            $order->status = $request->status;
               $order->save();
-
+            // Dispatch the job to send push notification
+            dispatch(new sendPushNotificationJob($order));
+        //    sendPushNotification($order->user_id,$order->id,"#{$order->id} status updated","Your order status is ".ucfirst($order->status));
 
            return back()->with('success', 'Order status updated successfully.');
             

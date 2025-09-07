@@ -14,7 +14,11 @@ use App\Models\PriceFilter;
 use App\Models\Product;
 use App\Models\ProductVariation;
 use App\Models\ShippingZone;
+use App\Models\User;
+use App\Models\UserDevice;
 use App\Models\Wishlist;
+use App\Services\GoogleAccessTokenServices;
+use Illuminate\Support\Facades\Http;
 
 function getAppData($select){
 
@@ -376,4 +380,49 @@ function getJustArrivedProducts(){
 
   }
 }
+
+function sendPushNotification($userId,$orderId, $title, $body){
+  
+    $token = UserDevice::where('user_id',$userId)->pluck('fcm_token');
+    if($token->count() > 0){
+    $accessToken =  GoogleAccessTokenServices::getAccessToken();
+    foreach($token as $tokens){
+      try{
+        $url = "https://fcm.googleapis.com/v1/projects/product-selling-app-a75ce/messages:send";
+        $payload = [
+          "message" => [
+            "token" => $tokens,
+            "notification" => [
+              "title" => $title,
+              "body" => $body
+            ],
+            'data' =>[
+              'user_id' => strval($userId),
+              'order_id' => strval($orderId),
+            ],
+            'android' => [
+              'direct_boot_ok' => true,
+            ]
+
+          ]
+        ];
+     $response =   Http::withHeaders([
+          'Authorization' => 'Bearer '.$accessToken,
+          'Content-Type' => 'application/json'
+        ])->post($url, $payload);
+
+        $responseBody = $response->json();
+      \Log::info("Push response body: " . json_encode($responseBody));
+      }
+      catch(\Exception $e){
+        UserDevice::where('fcm_token',$tokens)->delete();
+
+        \Log::error("Error sending push notification to token {$tokens}: " . $e->getMessage());
+      }
+     
+    }
+  }
+
+   
+} 
 ?>
