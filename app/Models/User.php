@@ -65,4 +65,14 @@ class User extends Authenticatable
     public function shippingAddresses(){
         return $this->hasOne(Address::class)->where('type','shipping');
     }
+
+      public function sendMessage(){
+
+        return $this->hasMany(Message::class, 'from_id');
+    }
+    public function receiveMessage(){
+
+        return $this->hasMany(Message::class, 'to_id');
+    }
+        
 }

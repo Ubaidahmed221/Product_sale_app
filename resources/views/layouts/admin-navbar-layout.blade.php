@@ -49,6 +49,9 @@
       <li>
         <a href="{{ route('admin.contact.index') }}"><span class="fa fa-phone mr-3"></span> Contact Message </a>
     </li>
+    <li>
+        <a href="{{ route('admin.chat') }}"><span class="fa fa-comment mr-3"></span> Chats </a>
+    </li>
       <li>
         <a href="#" class="logout-btn" ><span class="fa fa-sign-out mr-3 "></span>Log Out </a>
     </li>

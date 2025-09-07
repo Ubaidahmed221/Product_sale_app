@@ -8,6 +8,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\VariationController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -200,6 +201,9 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
      Route::put('/admin/contact/{contact}',[AdminContactController::class,'update'])->name('admin.contact.update');
      Route::delete('/admin/contact/{contact}',[AdminContactController::class,'destroy'])->name('admin.contact.distroy');
 
+    //  Chat Route
+    Route::get('/admin/chat',[AdminChatController::class,'index'])->name('admin.chat');
+  
 
 });
 Route::post('/subscribe',[SubscriberController::class,'store'] )->name('subscribe');
