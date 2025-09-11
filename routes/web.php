@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Controller;
@@ -77,6 +78,10 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
     Route::get('/dashboard/change-password',[UserController::class,'changePassword'])->name('user.change-password');
     Route::put('/dashboard/change-password',[UserController::class,'updatePassword'])->name('user.update.password');
     Route::post('/dashboard/update',[UserController::class,'accountUpdate'])->name('user.account.update');
+
+    // chat support route
+    Route::get('/dashboard/chat-support',[ChatController::class,'index'])->name('user.chat.support');
+    Route::post('/dashboard/chat/send',[ChatController::class,'sendMessage'])->name('user.chat.send');
 
     Route::post('/review',[ReviewController::class,'store'] )->name('review.store');
     Route::post('/logout',[AuthController::class,'logout'] )->name('logout');

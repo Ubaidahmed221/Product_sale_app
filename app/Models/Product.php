@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use App\Models\Review;
+use App\Models\ProductImage;
+use App\Models\Category;
+use App\Models\ProductVariation;
+use App\Models\Variation;
+use App\Models\VariationValue;
+
 
 class Product extends Model
 {

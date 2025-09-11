@@ -25,6 +25,8 @@
                 class="list-group-item {{ request()->routeIs('user.address') ? 'active': ''}}" >Shipping & Billing Address</a>
                 <a href="{{route('user.change-password')}}" 
                 class="list-group-item {{ request()->routeIs('user.change-password') ? 'active': ''}}" >Change Password</a>
+                 <a href="{{route('user.chat.support')}}" 
+                class="list-group-item {{ request()->routeIs('user.chat.support') ? 'active': ''}}" >Chat Support</a>
            
             </div>
         </div>
