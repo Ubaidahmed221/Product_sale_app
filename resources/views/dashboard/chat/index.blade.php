@@ -32,14 +32,58 @@
 
           return `
             <div class="mb-2 ${align}">
-                <div class="d-inline-block p-2 ${bubble}" style="border-radius: 10px; max-width: 70%;">
-                    <strong>${name}:</strong> ${data.message}
-                    <div class="text-muted
-                        <small>${new Date(data.created_at).toLocaleTimeString()}</small>
-                    </div>
+                <div class="small text-muted" >${name}</div>
+                <span class="d-inline-block px-3 py-2 rounded ${bubble}" style=" max-width: 70%;">${data.message}</span>
                 </div>
-            </div>
-          `;
+                `;
+                // <div class="d-inline-block px-3 ${bubble}" style="border-radius: 10px; max-width: 70%;">
+                //     <strong>${name}:</strong> ${data.message}
+                //     <div class="text-muted
+                //         <small>${new Date(data.created_at).toLocaleTimeString()}</small>
+                //     </div>
+                // </div>
+        }
+
+        function loadMessages(){
+            $.ajax({
+                url: "{{ route('user.chat.messages',':id') }}".replace(':id', adminId),
+                method: "GET",
+                success: function(response){
+                    if(response.success){
+                        console.log(response);
+                          $("#chatwindow").html(response.data.map(messageBubble).join('') || 
+                            '<p class=" text-muted">No messages yet. Start the conversation!</p>');
+                            // $("#chatwindow").html(html);
+                            // $("#chatwindow").scrollTop($("#chatwindow")[0].scrollHeight);
+                              const el = $("#chatwindow");
+                            el.scrollTop(el[0].scrollHeight);
+
+                            $.ajax({
+                url: "{{ route('user.messages.read',':id') }}".replace(':id', adminId),
+                method: "POST",
+               headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }} '
+                },
+                success: function(response){
+                    if(response.success){
+                      
+                     
+                    } else {
+                        alert('Failed to send message.');
+                    }
+                },
+                error: function(){
+                    alert('Error sending message.');
+                }
+            });
+                     } else {
+                        alert('Failed to load messages.');
+                    }
+                },
+                error: function(){
+                    alert('Error loading messages.');
+                }
+            });
         }
 
         $("#chatform").on('submit', function(e){
@@ -64,7 +108,8 @@
                         $("#messageInput").val('');
                      const html =   $("#chatwindow").html() + messageBubble(response.data);
                             $("#chatwindow").html(html);
-                            $("#chatwindow").scrollTop($("#chatwindow")[0].scrollHeight);
+                           const el = $("#chatwindow");
+                            el.scrollTop(el[0].scrollHeight);
                      
                     } else {
                         alert('Failed to send message.');
@@ -75,5 +120,6 @@
                 }
             });
         });
+        loadMessages();
     </script>
 @endpush

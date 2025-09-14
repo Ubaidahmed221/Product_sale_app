@@ -82,6 +82,8 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
     // chat support route
     Route::get('/dashboard/chat-support',[ChatController::class,'index'])->name('user.chat.support');
     Route::post('/dashboard/chat/send',[ChatController::class,'sendMessage'])->name('user.chat.send');
+    Route::get('/dashboard/chat/messages/{userId}',[ChatController::class,'fetchMessages'])->name('user.chat.messages');
+    Route::post('/dashboard/chat/mark-read/{userId}',[ChatController::class,'markAsRead'])->name('user.messages.read');
 
     Route::post('/review',[ReviewController::class,'store'] )->name('review.store');
     Route::post('/logout',[AuthController::class,'logout'] )->name('logout');

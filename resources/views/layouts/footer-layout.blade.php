@@ -54,8 +54,7 @@
                 <p class="mb-md-0 text-center text-md-left text-dark">
                     &copy; <a class="text-dark font-weight-semi-bold" href="{{ route('index') }}">{{ getAppData('site_name') }}</a>. All Rights Reserved. Designed
                     by
-                    <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a><br>
-                    Distributed By <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                    <a class="text-dark font-weight-semi-bold" href="">Ubaid Developer</a>
                 </p>
             </div>
             <div class="col-md-6 px-xl-0 text-center text-md-right">

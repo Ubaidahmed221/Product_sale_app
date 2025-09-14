@@ -39,4 +39,40 @@ class ChatController extends Controller
            return response()->json(['success' => false, 'message' => 'Failed to send message.'], 500);
         }
     }
+
+      public function fetchMessages($userId){
+        try{
+           $authid = Auth::id();
+          $message =  Message::where(function($q) use($userId,$authid){
+                $q->where('from_id',$userId);
+                $q->where('to_id',$authid);
+            })->orWhere(function($q) use($userId,$authid){
+                $q->where('from_id',$authid);
+                $q->where('to_id',$userId);
+            })
+            ->with('sender:id')
+            ->orderBy('created_at','asc')
+            ->get();
+
+            return response()->json(['success' =>  true, 'message' => 'Message ', 
+            'data' => $message->load('sender:id') ]);
+        }
+        catch(\Exception $e){
+           return response()->json(['success' => false, 'message' => 'Failed to send message.'], 500);
+        }
+    }
+      public function markAsRead($userId){
+        try{
+           
+          Message::where('from_id',$userId)
+          ->where('to_id',Auth::id())
+          ->where('is_read',0)
+          ->update(['is_read' => 1]);
+
+            return response()->json(['success' =>  true ]);
+        }
+        catch(\Exception $e){
+           return response()->json(['success' => false, 'message' => 'Failed to send message.'], 500);
+        }
+    }
 }
