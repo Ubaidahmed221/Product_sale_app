@@ -18,10 +18,10 @@ jobs:
 
       - name: Upload to FTP (using lftp)
         env:
-          FTP_HOST: wearinghouse.zappsolutions.pro
+          FTP_HOST: zappsolutions.pro
           FTP_USERNAME: zappsolutions
           FTP_PASSWORD: AlQh=sFX%ys0
-          FTP_TARGET: /public_html/wearinghouse.zappsolutions.pro/   # remote path, e.g. /public_html/
+          FTP_TARGET: /wearinghouse.zappsolutions.pro/   # remote path, e.g. /public_html/
           FTP_PORT: 21       # optional (default 21)
         run: |
           set -e
