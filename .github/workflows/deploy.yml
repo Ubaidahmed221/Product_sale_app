@@ -1,0 +1,30 @@
+name: FTP Deploy
+
+on:
+  push:
+    branches:
+      - main   # agar aap kisi aur branch pe chahte hain to yahan change karein
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Upload to FTP (using lftp)
+        env:
+          FTP_HOST: wearinghouse.zappsolutions.pro
+          FTP_USERNAME: zappsolutions
+          FTP_PASSWORD: AlQh=sFX%ys0
+          FTP_TARGET: wearinghouse.zappsolutions.pro   # remote path, e.g. /public_html/
+          FTP_PORT: ${{ secrets.FTP_PORT }}       # optional (default 21)
+        run: |
+          set -e
+          echo "Uploading to $FTP_HOST (target: $FTP_TARGET)"
+          # Note: --delete removes remote files not present locally. Remove if you don't want that.
+          lftp -c "set ftp:ssl-allow no; open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST -p ${FTP_PORT:-21}; mirror -R --delete --verbose ./ $FTP_TARGET"
