@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class VerificationController extends Controller
 {
@@ -14,7 +15,7 @@ class VerificationController extends Controller
 
         $user = User::where('verification_token', $token)->first();
         // dd($user);
-       \Log::info('User table data: ' . $user);
+       Log::info('User table data: ' . $user);
        if(!$user){
         return abort(404,"Something Went Wrong!");
        }

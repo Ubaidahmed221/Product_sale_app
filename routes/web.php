@@ -33,7 +33,8 @@ use App\Http\Controllers\ProductController as websiteProductController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
-
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -44,7 +45,29 @@ use App\Http\Controllers\WishlistController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/test-mail', function () {
+    try {
+        // 👇 yahan apna receiving email address likho
+        $toEmail = 'uneebahmed397@gmail.com';
 
+        // 👇 Simple test message
+        Mail::raw('This is a test email from Laravel SMTP setup.', function ($message) use ($toEmail) {
+            $message->to($toEmail)
+                    ->subject('✅ Laravel Email Test');
+        });
+
+        return "<h3 style='color:green;'>✅ Test email sent successfully to <b>{$toEmail}</b></h3>";
+    } catch (\Exception $e) {
+        return "<h3 style='color:red;'>❌ Failed to send email:</h3><pre>{$e->getMessage()}</pre>";
+    }
+});
+Route::get('/clear-cache', function () {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+
+    return "<h3 style='color:green;'>✅ Cache cleared and config re-cached successfully!</h3>";
+});
 Route::get('/',[MainController::class,'index'])->name('index');
 
 Route::group(['middleware' => ['IsAuthenticated']], function(){

@@ -10,8 +10,8 @@ use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use App\Models\PasswordReset;
 use Illuminate\Support\Facades\Hash;
-
-use Mail;
+use Illuminate\Support\Facades\Mail;
+// use Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
