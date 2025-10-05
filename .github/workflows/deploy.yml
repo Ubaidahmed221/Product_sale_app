@@ -21,7 +21,7 @@ jobs:
           FTP_HOST: ftp.zappsolutions.pro
           FTP_USERNAME: zappsolutions@wearinghouse.zappsolutions.pro
           FTP_PASSWORD: AlQh=sFX%ys0
-          FTP_TARGET: /home/zappsolutions/wearinghouse.zappsolutions.pro/
+          FTP_TARGET: ./
         run: |
           echo "🚀 Uploading to $FTP_HOST (target: $FTP_TARGET)"
           lftp -c "
