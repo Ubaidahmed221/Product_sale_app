@@ -21,8 +21,8 @@ jobs:
           FTP_HOST: wearinghouse.zappsolutions.pro
           FTP_USERNAME: zappsolutions
           FTP_PASSWORD: AlQh=sFX%ys0
-          FTP_TARGET: wearinghouse.zappsolutions.pro   # remote path, e.g. /public_html/
-          FTP_PORT: ${{ secrets.FTP_PORT }}       # optional (default 21)
+          FTP_TARGET: /public_html/wearinghouse.zappsolutions.pro/   # remote path, e.g. /public_html/
+          FTP_PORT: 21       # optional (default 21)
         run: |
           set -e
           echo "Uploading to $FTP_HOST (target: $FTP_TARGET)"
