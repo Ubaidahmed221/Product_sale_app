@@ -21,7 +21,7 @@ jobs:
           FTP_HOST: ftp.zappsolutions.pro                     # ✅ from cPanel "FTP Server"
           FTP_USERNAME: zappsolutions@wearinghouse.zappsolutions.pro  # ✅ full username from cPanel
           FTP_PASSWORD: AlQh=sFX%ys0                           # ✅ same as cPanel password
-          FTP_TARGET: wearinghouse.zappsolutions.pro/ # ✅ exact document root path
+          FTP_TARGET: ./ # ✅ exact document root path
           FTP_PORT: 21
         run: |
           set -e
