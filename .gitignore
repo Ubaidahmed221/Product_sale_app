@@ -17,3 +17,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/public/firebase-messaging-sw.js
+/config/product-selling-app-a75ce-cc816df1044d.json
+*.zip
