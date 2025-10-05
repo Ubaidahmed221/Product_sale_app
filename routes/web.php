@@ -66,7 +66,7 @@ Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:cache');
 
-    return "<h3 style='color:green;'>✅ Cache cleared and config re-cached successfully!</h3>";
+    return "<h3 style='color:green;'>✅ Cache cleared and config re-cached successfully test test!</h3>";
 });
 Route::get('/',[MainController::class,'index'])->name('index');
 
