@@ -19,7 +19,7 @@ jobs:
       - name: Upload to FTP (using lftp)
         env:
           FTP_HOST: ftp.zappsolutions.pro                     # ✅ from cPanel "FTP Server"
-          FTP_USERNAME: zappsolutions  # ✅ full username from cPanel
+          FTP_USERNAME: appsolutions@wearinghouse.zappsolutions.pro  # ✅ full username from cPanel
           FTP_PASSWORD: AlQh=sFX%ys0                           # ✅ same as cPanel password
           FTP_TARGET: /public_html/wearinghouse.zappsolutions.pro/  # ✅ exact document root path
           FTP_PORT: 21
