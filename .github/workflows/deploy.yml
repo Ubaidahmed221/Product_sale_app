@@ -18,12 +18,23 @@ jobs:
 
       - name: Upload to FTP (using lftp)
         env:
-          FTP_HOST: ftp.zappsolutions.pro                     # ✅ from cPanel "FTP Server"
-          FTP_USERNAME: zappsolutions@wearinghouse.zappsolutions.pro  # ✅ full username from cPanel
-          FTP_PASSWORD: AlQh=sFX%ys0                           # ✅ same as cPanel password
-          FTP_TARGET: ./ # ✅ exact document root path
-          FTP_PORT: 21
+          FTP_HOST: ftp.zappsolutions.pro
+          FTP_USERNAME: zappsolutions@wearinghouse.zappsolutions.pro
+          FTP_PASSWORD: AlQh=sFX%ys0
+          FTP_TARGET: /home/zappsolutions/wearinghouse.zappsolutions.pro/
         run: |
-          set -e
-          echo "Uploading to $FTP_HOST (target: $FTP_TARGET)"
-          lftp -c "set ftp:ssl-allow no; open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST -p ${FTP_PORT:-21}; mirror -R --delete --verbose ./ $FTP_TARGET"
+          echo "🚀 Uploading to $FTP_HOST (target: $FTP_TARGET)"
+          lftp -c "
+          set ftp:ssl-allow no;
+          open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST;
+          mirror -R \
+            --verbose \
+            --parallel=10 \
+            --exclude-glob .git* \
+            --exclude-glob .github* \
+            --exclude-glob node_modules/* \
+            --exclude-glob vendor/* \
+            --exclude-glob storage/* \
+            --exclude-glob public/uploads/* \
+            ./ $FTP_TARGET
+          "
