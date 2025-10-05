@@ -3,7 +3,7 @@ name: FTP Deploy
 on:
   push:
     branches:
-      - main   # agar aap kisi aur branch pe chahte hain to yahan change karein
+      - main
 
 jobs:
   deploy:
@@ -18,13 +18,12 @@ jobs:
 
       - name: Upload to FTP (using lftp)
         env:
-          FTP_HOST: zappsolutions.pro
-          FTP_USERNAME: zappsolutions
-          FTP_PASSWORD: AlQh=sFX%ys0
-          FTP_TARGET: /wearinghouse.zappsolutions.pro/   # remote path, e.g. /public_html/
-          FTP_PORT: 21       # optional (default 21)
+          FTP_HOST: ftp.zappsolutions.pro                     # ✅ from cPanel "FTP Server"
+          FTP_USERNAME: zappsolu@wearinghouse.zappsolutions.pro  # ✅ full username from cPanel
+          FTP_PASSWORD: AlQh=sFX%ys0                           # ✅ same as cPanel password
+          FTP_TARGET: /public_html/wearinghouse.zappsolutions.pro/  # ✅ exact document root path
+          FTP_PORT: 21
         run: |
           set -e
           echo "Uploading to $FTP_HOST (target: $FTP_TARGET)"
-          # Note: --delete removes remote files not present locally. Remove if you don't want that.
           lftp -c "set ftp:ssl-allow no; open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST -p ${FTP_PORT:-21}; mirror -R --delete --verbose ./ $FTP_TARGET"
