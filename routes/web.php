@@ -210,6 +210,8 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
 
     //  Chat Route
     Route::get('/admin/chat',[AdminChatController::class,'index'])->name('admin.chat');
+    Route::get('/admin/chat/users',[AdminChatController::class,'userwithMessages'])->name('admin.chat.users');
+    Route::get('/admin/chat/messages/{userid}',[ChatController::class,'fetchMessages'])->name('admin.chat.message');
   
 
 });

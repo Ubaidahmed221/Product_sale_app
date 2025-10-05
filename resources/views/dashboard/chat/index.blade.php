@@ -26,14 +26,17 @@
 
         function messageBubble(data){
             const mine = data.from_id === authId;
-          const align =  mine ? 'text-start' : 'text-end';
+        //   const align =  mine ? 'text-start' : 'text-end';
+              const align =  mine ? 'd-flex justify-content-end' : 'd-flex justify-content-start';
           const bubble = mine ? 'text-light bg-dark' : 'bg-light';
           const name =  mine ? 'You' : 'Admin';
 
           return `
             <div class="mb-2 ${align}">
+                <div>
                 <div class="small text-muted" >${name}</div>
-                <span class="d-inline-block px-3 py-2 rounded ${bubble}" style=" max-width: 70%;">${data.message}</span>
+                <span class="d-inline-block px-3 py-2 rounded ${bubble}" style=" max-width: 100%;">${data.message}</span>
+                </div>
                 </div>
                 `;
                 // <div class="d-inline-block px-3 ${bubble}" style="border-radius: 10px; max-width: 70%;">

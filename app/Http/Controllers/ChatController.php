@@ -50,12 +50,12 @@ class ChatController extends Controller
                 $q->where('from_id',$authid);
                 $q->where('to_id',$userId);
             })
-            ->with('sender:id')
+            ->with('sender')
             ->orderBy('created_at','asc')
             ->get();
 
             return response()->json(['success' =>  true, 'message' => 'Message ', 
-            'data' => $message->load('sender:id') ]);
+            'data' => $message->load('sender') ]);
         }
         catch(\Exception $e){
            return response()->json(['success' => false, 'message' => 'Failed to send message.'], 500);
