@@ -17,7 +17,7 @@
                     <span class="text-muted">Select a user to start chatting</span>
                 </div>
 
-                <div id="chatWindow" class="flex-grow-1 p-3 overflow-auto" style="height: 0; min-height: 0;"></div>
+                <div id="chatWindow" class="flex-grow-1 p-3 overflow-auto" style="max-height: 70vh;;"></div>
                 {{-- <div id="chatWindow" class="flex-grow-1 p-3"  style="overflow-y:auto;"></div> --}}
 
                 <div class="p-3 border-top">
@@ -168,6 +168,48 @@
                 });
         }
         loadUsers();
+
+        // send message
+           $("#chatForm").on('submit', function(e){
+            e.preventDefault();
+            const message = $("#messageInput").val().trim();
+            if(!message){
+                return;
+            }
+            console.log(message);
+          const to_id =  $("#to_id").val(); 
+            if(!to_id){
+                alert('Please select a user to chat with.');
+                return;
+            }
+            $.ajax({
+                url: "{{ route('admin.chat.send.message') }}",
+                method: "POST",
+               data: JSON.stringify({
+                to_id: to_id,
+                message: message
+               }),
+               contentType: "application/json",
+               headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }} '
+                },
+                success: function(response){
+                    if(response.success){
+                        $("#messageInput").val('');
+                     const html =   $("#chatWindow").html() + messageBubble(response.data);
+                            $("#chatWindow").html(html);
+                           const el = $("#chatWindow");
+                            el.scrollTop(el[0].scrollHeight);
+                        loadUsers();
+                    } else {
+                        alert('Failed to send message.');
+                    }
+                },
+                error: function(){
+                    alert('Error sending message.');
+                }
+            });
+        });
        
         </script>
     @endpush
