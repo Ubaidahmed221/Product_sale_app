@@ -13,9 +13,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Install Node.js for Vite build
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # Install dependencies and build assets
+      - name: Install and build frontend
+        run: |
+          npm ci
+          npm run build
+
+      # Install lftp for FTP upload
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
 
+      # Upload everything (including build folder)
       - name: Upload to FTP (using lftp)
         env:
           FTP_HOST: ftp.zappsolutions.pro
