@@ -29,5 +29,11 @@ window.Echo = new Echo({
     // wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
     // forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
     forceTLS: true,
+    auth:{
+        headers:{
+            'X-CSRF-TOKEN': window.Laravel.csrfToken,
+        },
+        withCredentials: true,
+    }
     // enabledTransports: ['ws', 'wss'],
 });

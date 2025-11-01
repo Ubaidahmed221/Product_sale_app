@@ -210,7 +210,27 @@
                 }
             });
         });
-       
+        document.addEventListener('DOMContentLoaded', () => {
+    const authId = {{ auth()->id() }};
+    console.log('Subscribing to private channel chat.' + authId);
+
+    if (!window.Echo) {
+        console.error('Echo not loaded yet');
+        return;
+    }
+
+    window.Echo.private(`chat.${authId}`)
+        .listen('.message.sent', (e) => {
+          
+             console.log('Message:', e);
+             const messagehtml =   messageBubble(e);
+             $("#chatWindow").append(messagehtml);
+               const el = $("#chatWindow");
+             el.scrollTop(el[0].scrollHeight);
+              loadUsers();
+        })
+        .error((err) => console.error('Echo error:', err));
+});
         </script>
     @endpush
     <style>

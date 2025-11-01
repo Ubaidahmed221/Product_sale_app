@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -31,6 +32,9 @@ class ChatController extends Controller
                 'from_id' => Auth::id(),
                 'message' => $request->message,
             ]);
+
+            // broadcast new message event
+            broadcast(new MessageSent($message->load('sender:id,name') ))->toOthers();
 
             return response()->json(['success' =>  true, 'message' => 'Message sent successfully.', 
             'data' => $message->load('sender:id') ]);

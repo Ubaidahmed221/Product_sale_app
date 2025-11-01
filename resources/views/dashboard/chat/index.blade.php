@@ -124,5 +124,25 @@
             });
         });
         loadMessages();
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const authId = {{ auth()->id() }};
+    console.log('Subscribing to private channel chat.' + authId);
+
+    if (!window.Echo) {
+        console.error('Echo not loaded yet');
+        return;
+    }
+
+    window.Echo.private(`chat.${authId}`)
+        .listen('.message.sent', (e) => {
+            console.log('Message:', e.message);
+             const messagehtml =   messageBubble(e);
+             $("#chatwindow").append(messagehtml);
+               const el = $("#chatwindow");
+             el.scrollTop(el[0].scrollHeight);
+        })
+        .error((err) => console.error('Echo error:', err));
+});
     </script>
 @endpush

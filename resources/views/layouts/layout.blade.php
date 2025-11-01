@@ -275,8 +275,13 @@ if ('serviceWorker' in navigator) {
 
 </script>
     @endif
+<script>
+      window.Laravel = {
+          csrfToken: '{{ csrf_token() }}'
+      };
+    </script>
+    @vite(['resources/js/app.js'])
     @stack('script')
-
 </body>
 
 </html>
