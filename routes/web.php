@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PaymentGatewayCOntroller;
 use App\Http\Controllers\Admin\PriceFilterController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\CartController;
@@ -237,6 +238,11 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
     Route::get('/admin/chat/messages/{userid}',[ChatController::class,'fetchMessages'])->name('admin.chat.message');
     Route::post('/admin/chat/send',[ChatController::class,'sendMessage'])->name('admin.chat.send.message');
   
+    // setting
+    Route::get('/admin/setting',[SettingController::class,'index'])->name('admin.setting');
+    Route::put('/admin/setting/affiliate',[SettingController::class,'affiliateUpdate'])->name('admin.setting.affiliate.update');
+
+
 
 });
 Route::post('/subscribe',[SubscriberController::class,'store'] )->name('subscribe');

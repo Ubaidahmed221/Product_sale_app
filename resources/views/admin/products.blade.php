@@ -123,6 +123,11 @@
                <input type="number" min="1" class="form-control" name="stock"
                 placeholder="enter Qty" >
            </div>
+            <div class="form-group">
+               <label>Affiliate Commission (%):</label>
+                <input type="number" class="form-control" name="affiliate_commission"
+                        placeholder="enter Commission" step="0.01" min="0" >
+           </div>
            <div class="form-group">
                <label>Category:</label>
                <div class="dropdown addDropdown w-100" >
@@ -228,6 +233,11 @@
                    <input type="number" min="1" class="form-control" name="stock" id="stock"
                     placeholder="enter Qty" >
                </div>
+                <div class="form-group">
+               <label>Affiliate Commission (%):</label>
+                <input type="number" class="form-control" name="affiliate_commission" id="affiliate_commission"
+                        placeholder="enter Commission" step="0.01" min="0" >
+           </div>
                <div class="form-group">
                    <label>Category:</label>
                    <div class="dropdown updateDropdown w-100" >
@@ -511,6 +521,7 @@
                            $('#stock').val(res.data.stock);
                            $('#description').val(res.data.description);
                            $('#add_information').val(res.data.add_information);
+                           $('#affiliate_commission').val(res.data.affiliate_commission);
 
                            var categories = res.data.categories;
                            var inputs = $('.updateDropdownContent input');

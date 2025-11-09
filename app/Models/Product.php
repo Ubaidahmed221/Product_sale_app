@@ -24,6 +24,7 @@ class Product extends Model
         'description',
         'add_information',
         'sku',
+        'affiliate_commission',
         'deleted_at'
     ];
 

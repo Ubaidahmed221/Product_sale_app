@@ -44,11 +44,14 @@ class ProductController extends Controller
                 'variations.*.variation_value_ids' => 'array',
                 'variations.*.variation_value_ids.*' => 'integer|exists:variation_values,id',
                 'description' => 'nullable',
-                'add_information' => 'nullable'               
+                'add_information' => 'nullable'   ,
+                'affiliate_commission' => 'nullable'          
 
             ]);
         $product =  Product::create(
-                $request->only('title','pkr_price','usd_price','stock','description','add_information')
+                $request->only('title','pkr_price','usd_price','stock','description',
+                'add_information',
+                'affiliate_commission')
             );
             // for images store
             if($request->hasFile('images')){
@@ -183,13 +186,14 @@ class ProductController extends Controller
                 'variations.*.variation_value_ids' => 'array',
                 'variations.*.variation_value_ids.*' => 'integer|exists:variation_values,id',
                 'description' => 'nullable',
-                'add_information' => 'nullable'               
+                'add_information' => 'nullable',             
+                'affiliate_commission' => 'nullable',             
 
             ]);
 
             $product = Product::findOrFail($request->id);
         $product->update(
-                $request->only('title','pkr_price','usd_price','stock','description','add_information')
+                $request->only('title','pkr_price','usd_price','stock','description','add_information','affiliate_commission')
             );
             // for images store
             if($request->hasFile('images')){

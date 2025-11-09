@@ -52,6 +52,9 @@
     <li>
         <a href="{{ route('admin.chat') }}"><span class="fa fa-comment mr-3"></span> Chats </a>
     </li>
+    <li>
+        <a href="{{ route('admin.setting') }}"><span class="fa fa-gear mr-3"></span> Settings </a>
+    </li>
       <li>
         <a href="#" class="logout-btn" ><span class="fa fa-sign-out mr-3 "></span>Log Out </a>
     </li>
