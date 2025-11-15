@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -31,6 +32,10 @@ class User extends Authenticatable
         'country',
         'state',
         'is_block',
+        'referral_code',
+        'referred_by',
+        'wallet_balance',
+
     ];
 
     /**
@@ -53,6 +58,28 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            if (empty($user->referral_code)) {
+                $user->referral_code = Str::upper(Str::random(10));
+                do {
+                   
+                    $code = strtoupper(Str::random(8));
+                } while (self::where('referral_code', $code)->exists());
+                $user->referral_code = $code;
+            }
+        });
+    }
+
+    public function affiliateComissions(){
+        return $this->hasMany(AffiliateCommission::class, 'affiliate_user_id');
+    }
+    public function referrals(){
+        return $this->hasMany(User::class, 'referred_by');
+    }
     public function addresses(){
         return $this->hasMany(Address::class);
     }

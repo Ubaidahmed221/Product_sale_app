@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\AffiliateController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckoutController;
@@ -71,7 +72,7 @@ Route::get('/clear-cache', function () {
 });
 Route::get('/',[MainController::class,'index'])->name('index');
 
-Route::group(['middleware' => ['IsAuthenticated']], function(){
+Route::group(['middleware' => ['web','IsAuthenticated']], function(){
 
 Route::get('/register',[AuthController::class,'registerView'])->name('registerView');
 Route::post('/register/create',[AuthController::class,'register'])->name('register');
@@ -135,7 +136,8 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
 
     Route::post('/save-fcm_token',[NotificationController::class,'saveFcmToken'] )->name('save.token');
 
-
+    // affiliate route
+    Route::get('/affliate',[AffiliateController::class,'index'] )->name('user.affiliate');
 });
 
 Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){

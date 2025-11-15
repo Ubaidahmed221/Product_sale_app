@@ -51,6 +51,14 @@ class AuthController extends Controller
                 'token_expires_at' => $tokenExpiresAt,
 
             ]);
+            if(session()->has('referral_code')){
+                $referralCode = session('referral_code');
+                $referrer = User::where('referral_code', $referralCode)->first();
+                if($referrer && $referrer->id !== $user->id){
+                    $user->referred_by = $referrer->id;
+                    $user->save();
+                }
+            }
             $this->sendVerificationEmail($user);
 
             return back()->with('success', 'Your Registration has been Successfully, please check your email to verify you account!');
