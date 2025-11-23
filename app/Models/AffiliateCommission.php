@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AffiliateCommission extends Model
 {
     use HasFactory;
+   protected $table = 'affiliate_commissions';
 
     protected $fillable = [
         'affiliate_user_id',

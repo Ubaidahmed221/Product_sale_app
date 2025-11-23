@@ -25,7 +25,7 @@ class SettingController extends Controller
           $validatedata =  $request->validate([
                 'commission_percentage' => 'required|numeric|min:0',
                 'min_payout' => 'required|numeric|min:1',
-                'auto_credit_wallet' => 'required|boolean',
+                'auto_credit_wallet' => 'boolean',
             ]);
             $validatedata['auto_credit_wallet'] = $request->has('auto_credit_wallet') ? 1 : 0;
 

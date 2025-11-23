@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\AffiliateSetting;
 use App\Models\AppData;
 use App\Models\Menu;
 use App\Models\category;
@@ -425,4 +426,14 @@ function sendPushNotification($userId,$orderId, $title, $body){
 
    
 } 
+
+function getSetting($select){
+  $senddata = null;
+
+  $exist = AffiliateSetting::select($select)->first();
+  if($exist){
+    $senddata = $exist->$select;
+  }
+  return $senddata;
+}
 ?>
