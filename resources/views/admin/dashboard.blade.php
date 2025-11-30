@@ -25,10 +25,10 @@
             </div>
         </div>
           <div class="col-md-3">
-            <div class="card bg-info text-white p-3">
+            <a href="{{route('admin.users.index')}}" class="card bg-info text-white p-3">
                <h5 class="text-white">Total User</h5>
                <h3 class="text-white"> {{ $totalUser }}</h3>
-            </div>
+            </a>
         </div>
 
     </div>

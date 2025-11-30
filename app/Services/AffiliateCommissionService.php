@@ -39,7 +39,7 @@ class AffiliateCommissionService
                         'affiliate_user_id' => $affiliate->id,
                         'order_id' => $order->id,
                         'commission_amount' => $commissionValue,
-                        'status' => getSetting('auto_credit_wallet') ? 'approved' : 'pending',
+                        'status' => getSetting('auto_credit_wallet') ? 'paid' : 'pending',
                     ]);
                     Log::info("Total Commission for order ID {$order->id} is ". $commissionValue);
 

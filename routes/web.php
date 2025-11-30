@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Admin\AffiliateController as AdminAffiliateController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\VerificationController;
 use Illuminate\Support\Facades\Route;
@@ -243,6 +245,10 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
     // setting
     Route::get('/admin/setting',[SettingController::class,'index'])->name('admin.setting');
     Route::put('/admin/setting/affiliate',[SettingController::class,'affiliateUpdate'])->name('admin.setting.affiliate.update');
+
+    // affiliate 
+    Route::get('/admin/affiliate/commission',[AdminAffiliateController::class,'index'])->name('admin.affiliate.commission');
+    Route::get('/admin/affiliate-user/{id}',[AdminAffiliateController::class,'commissions'])->name('admin.affiliate.users');
 
 
 

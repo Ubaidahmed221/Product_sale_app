@@ -30,6 +30,6 @@
         <button class="btn btn-warning btn-sm" >Update</button>
     </form>
 
-    @include('admin.orders.partials.detail', ['order' => $order]);
+    @include('admin.orders.partials.detail', ['order' => $order])
 
     @endsection
