@@ -55,6 +55,13 @@
                 })
 
             });
+
+            $('.toggle-submenu').click(function(e){
+                e.preventDefault();
+                $(this).next('.submenu').toggleClass('d-none');
+
+                $(this).find('.fa-chevron-down').toggleClass('rotated');
+            });
         })
     </script>
     <script>

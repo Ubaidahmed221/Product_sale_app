@@ -243,13 +243,16 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
     Route::post('/admin/chat/send',[ChatController::class,'sendMessage'])->name('admin.chat.send.message');
   
     // setting
-    Route::get('/admin/setting',[SettingController::class,'index'])->name('admin.setting');
+    Route::get('/admin/affiliate/setting',[SettingController::class,'index'])->name('admin.affiliate.setting');
     Route::put('/admin/setting/affiliate',[SettingController::class,'affiliateUpdate'])->name('admin.setting.affiliate.update');
 
     // affiliate 
     Route::get('/admin/affiliate/commission',[AdminAffiliateController::class,'index'])->name('admin.affiliate.commission');
     Route::get('/admin/affiliate-user/{id}',[AdminAffiliateController::class,'commissions'])->name('admin.affiliate.users');
-
+    
+    Route::post('/admin/affiliate/commission/{commission}/approve',[AdminAffiliateController::class,'approve'])->name('admin.commission.approve');
+    Route::post('/admin/affiliate/commission/{commission}/reject',[AdminAffiliateController::class,'reject'])->name('admin.commission.reject');
+    Route::post('/admin/affiliate/commission/{commission}/mark-paid',[AdminAffiliateController::class,'markPaid'])->name('admin.commission.markPaid');
 
 
 });

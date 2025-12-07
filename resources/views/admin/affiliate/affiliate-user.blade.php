@@ -10,6 +10,19 @@
         <li><strong>Approved: </strong>Rs {{ number_format($stats['approved_commission'],2) }}</li>
         <li><strong>Paid: </strong>Rs {{ number_format($stats['paid_commission'],2) }}</li>
     </ul>
+     @if (Session::has('success'))
+    <div class="alert alert-success" role="alert">
+        {{ Session::get('success') }}
+      </div>
+
+    @endif
+    @if (Session::has('error'))
+    <div class="alert alert-danger" role="alert">
+        {{ Session::get('error') }}
+      </div>
+
+    @endif
+
      <table class="table table-bordered  " >
                 <thead>
                     <tr>
@@ -35,10 +48,19 @@
                               <td>
                                 @if ($commissions->status == 'pending')
                                   
-                                        <button class="btn btn-sm btn-success">Approve</button>
+                                        <form action="{{route('admin.commission.approve', $commissions->id)}}" method="POST" style="display: inline-block" >
+                                            @csrf
+                                            <button class="btn btn-sm btn-success">Approve</button>
+                                    </form>
+                                      <form action="{{route('admin.commission.reject', $commissions->id)}}" method="POST" style="display: inline-block" >
+                                       @csrf
                                         <button class="btn btn-sm btn-danger">Reject</button>
+                                    </form>
                                     @elseif ($commissions->status == 'approved')
+                                      <form action="{{route('admin.commission.markPaid', $commissions->id)}}" method="POST"  style="display: inline-block">
+                                         @csrf
                                         <button class="btn btn-sm btn-success">Mark Paid</button>
+                                    </form>
                                 @else
                                     <span class="text-muted" >No Action</span>
                                 @endif

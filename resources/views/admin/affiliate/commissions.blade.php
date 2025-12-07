@@ -3,6 +3,19 @@
 @section('content')
     <h2 class="mb-4">Affiliate Commissions</h2>
 
+     @if (Session::has('success'))
+    <div class="alert alert-success" role="alert">
+        {{ Session::get('success') }}
+      </div>
+
+    @endif
+    @if (Session::has('error'))
+    <div class="alert alert-danger" role="alert">
+        {{ Session::get('error') }}
+      </div>
+
+    @endif
+
      <table class="table table-bordered  " >
                 <thead>
                     <tr>
@@ -25,11 +38,20 @@
                                 <td> {{ $commissions->status}}</td>
                               <td>
                                 @if ($commissions->status == 'pending')
-                                  
+                                    <form action="{{route('admin.commission.approve', $commissions->id)}}" method="POST" style="display: inline-block" >
+                                        @csrf
                                         <button class="btn btn-sm btn-success">Approve</button>
+                                    </form>
+                                    <form action="{{route('admin.commission.reject', $commissions->id)}}" method="POST" style="display: inline-block" >
+                                        @csrf
                                         <button class="btn btn-sm btn-danger">Reject</button>
+                                    </form>
                                     @elseif ($commissions->status == 'approved')
+                                      
+                                    <form action="{{route('admin.commission.markPaid', $commissions->id)}}" method="POST"  style="display: inline-block">
+                                      @csrf
                                         <button class="btn btn-sm btn-success">Mark Paid</button>
+                                    </form>
                                 @else
                                     <span class="text-muted" >No Action</span>
                                 @endif

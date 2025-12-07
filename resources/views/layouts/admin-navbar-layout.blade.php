@@ -52,9 +52,29 @@
     <li>
         <a href="{{ route('admin.chat') }}"><span class="fa fa-comment mr-3"></span> Chats </a>
     </li>
-    <li>
-        <a href="{{ route('admin.setting') }}"><span class="fa fa-gear mr-3"></span> Settings </a>
+    <li class="nav-items">
+        <a  class="nav-link d-flex justify-content-between align-items-center toggle-submenu" href="#" >
+            <span> <i class="fa fa-users mr-3 "></i> Affiliate System  </span> 
+            <i class="fa fa-chevron-down" ></i>
+        </a>
+        <ul class="nav flex-column ms-3 submenu d-none" >
+            <li class="nav-items" >
+                 <a href="#" class="nav-link" ><span class="fa fa-user mr-3"></span> Affiliate Users </a>
+            </li> 
+             <li class="nav-items" >
+                 <a href="{{route('admin.affiliate.commission')}}" class="nav-link" ><span class="fa fa-percent mr-3"></span> Commissions </a>
+            </li> 
+             <li class="nav-items" >
+                 <a href="#" class="nav-link" ><span class="fa fa-money mr-3"></span> Payout Request</a>
+            </li> 
+             <li class="nav-items" >
+                 <a href="{{ route('admin.affiliate.setting') }}" class="nav-link" ><span class="fa fa-gear mr-3"></span> Settings </a>
+            </li> 
+
+        </ul>
     </li>
+   
+    
       <li>
         <a href="#" class="logout-btn" ><span class="fa fa-sign-out mr-3 "></span>Log Out </a>
     </li>
