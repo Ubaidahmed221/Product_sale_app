@@ -79,4 +79,17 @@ class AffiliateController extends Controller
                return back()->with('error',$e->getMessage());
            }
     }
+
+     public function users(){
+        try{
+          $users =  User::whereNotNull('referral_code')
+            ->whereHas('affiliateComissions')
+            ->withSum('affiliateComissions as total_earned','commission_amount')
+            ->latest()->paginate(15);
+       
+               return view('admin.affiliate.user',compact('users'));
+           }catch(\Exception $e){
+               return abort(404,"something went wrong");
+           }
+    }
 }

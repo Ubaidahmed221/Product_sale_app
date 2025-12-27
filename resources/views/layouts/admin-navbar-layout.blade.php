@@ -65,7 +65,7 @@
                  <a href="{{route('admin.affiliate.commission')}}" class="nav-link" ><span class="fa fa-percent mr-3"></span> Commissions </a>
             </li> 
              <li class="nav-items" >
-                 <a href="#" class="nav-link" ><span class="fa fa-money mr-3"></span> Payout Request</a>
+                 <a href="{{ route('admin.affiliate.users')  }}" class="nav-link" ><span class="fa fa-money mr-3"></span> Payout Request</a>
             </li> 
              <li class="nav-items" >
                  <a href="{{ route('admin.affiliate.setting') }}" class="nav-link" ><span class="fa fa-gear mr-3"></span> Settings </a>
