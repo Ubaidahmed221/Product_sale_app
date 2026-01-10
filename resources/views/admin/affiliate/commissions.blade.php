@@ -34,7 +34,9 @@
                                 <td> {{ $commissions->id}}</td>
                                 <td> {{ $commissions->affiliate->name}} ({{ $commissions->affiliate->email}}) </td>
                                 <td> {{ $commissions->order_id}}</td>
-                                <td> {{ number_format($commissions->commission_amount,2) }}</td>
+                                {{-- <td> {{ number_format($commissions->commission_amount,2) }}</td>
+                                 --}}
+                                 <td>{{$commissions->currency_symbol }} {{ number_format($commissions->commission_amount,2) }}</td>
                                 <td> {{ $commissions->status}}</td>
                               <td>
                                 @if ($commissions->status == 'pending')

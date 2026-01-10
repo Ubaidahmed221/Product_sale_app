@@ -15,6 +15,7 @@ class AffiliateCommission extends Model
         'order_id',
         'commission_amount',
         'status',
+        'currency'
     ];
 
     public function affiliate()
@@ -26,4 +27,15 @@ class AffiliateCommission extends Model
     {
         return $this->belongsTo(Order::class, 'order_id');
     }
+
+    public function getCurrencySymbolAttribute()
+    {
+        return match (strtoupper($this->currency ?? 'pkr')) {
+            'PKR' => '₨',
+            'USD' => '$',
+            default => '',
+        };
+    }
+       
+    
 }

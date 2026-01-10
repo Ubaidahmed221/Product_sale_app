@@ -35,6 +35,7 @@ class User extends Authenticatable
         'referral_code',
         'referred_by',
         'wallet_balance',
+        'wallet_balance_usd',
 
     ];
 

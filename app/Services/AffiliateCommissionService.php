@@ -39,13 +39,22 @@ class AffiliateCommissionService
                         'affiliate_user_id' => $affiliate->id,
                         'order_id' => $order->id,
                         'commission_amount' => $commissionValue,
+                        'currency' => strtolower($order->currency),
                         'status' => getSetting('auto_credit_wallet') ? 'paid' : 'pending',
                     ]);
                     Log::info("Total Commission for order ID {$order->id} is ". $commissionValue);
 
                     if(getSetting('auto_credit_wallet')){
+
+                        if(strtolower($order->currency) == 'pkr'){
+                            // credit to usd wallet
+                            $affiliate->wallet_balance = $affiliate->wallet_balance + $commissionValue;
+                        }
+                        else{
+                            $affiliate->wallet_balance_usd = $affiliate->wallet_balance_usd + $commissionValue;
+                        }
                         // credit to wallet
-                        $affiliate->wallet_balance = $affiliate->wallet_balance + $commissionValue;
+                        // $affiliate->wallet_balance = $affiliate->wallet_balance + $commissionValue;
                         $affiliate->save();
                         Log::info("Commission of {$commissionValue} credited to affiliate user ID {$affiliate->id} wallet");
                     }

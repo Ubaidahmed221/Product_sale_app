@@ -48,7 +48,7 @@
                                     @endif
                                 </td>
                                <td>
-                                <a href="{{route('admin.affiliate.users',$user->id)}}"  class="btn btn-sm btn-outline-primary" > View Commission </a>
+                                <a href="{{route('admin.affiliate-users',$user->id)}}"  class="btn btn-sm btn-outline-primary" > View Commission </a>
                                </td>
                                 <td><a href="{{route('admin.users.orders',$user->id)}}" class="btn btn-sm btn-outline-info">View Order</a></td>
                                

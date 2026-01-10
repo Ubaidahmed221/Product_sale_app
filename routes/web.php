@@ -248,7 +248,7 @@ Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){
 
     // affiliate 
     Route::get('/admin/affiliate/commission',[AdminAffiliateController::class,'index'])->name('admin.affiliate.commission');
-    Route::get('/admin/affiliate-user/{id}',[AdminAffiliateController::class,'commissions'])->name('admin.affiliate.users');
+    Route::get('/admin/affiliate-user/{id}',[AdminAffiliateController::class,'commissions'])->name('admin.affiliate-users');
     
     Route::post('/admin/affiliate/commission/{commission}/approve',[AdminAffiliateController::class,'approve'])->name('admin.commission.approve');
     Route::post('/admin/affiliate/commission/{commission}/reject',[AdminAffiliateController::class,'reject'])->name('admin.commission.reject');

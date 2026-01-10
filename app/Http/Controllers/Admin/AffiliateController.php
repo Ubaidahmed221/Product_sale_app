@@ -23,10 +23,14 @@ class AffiliateController extends Controller
         $commission = $user->affiliateComissions()->orderBy('id','desc')->paginate(15);
 
         $stats = [
-            'total_commission' => $user->affiliateComissions()->where('status','!=','rejected')->sum('commission_amount'),
-            'pending_commission' => $user->affiliateComissions()->where('status','pending')->sum('commission_amount'),
-            'approved_commission' => $user->affiliateComissions()->where('status','approved')->sum('commission_amount'),
-            'paid_commission' => $user->affiliateComissions()->where('status','paid')->sum('commission_amount'),
+            'pkr_total_commission' => $user->affiliateComissions()->where('status','!=','rejected')->where('currency','pkr')->sum('commission_amount'),
+            'usd_total_commission' => $user->affiliateComissions()->where('status','!=','rejected')->where('currency','usd')->sum('commission_amount'),
+            'pkr_pending_commission' => $user->affiliateComissions()->where('status','pending')->where('currency','pkr')->sum('commission_amount'),
+            'usd_pending_commission' => $user->affiliateComissions()->where('status','pending')->where('currency','usd')->sum('commission_amount'),
+            'pkr_approved_commission' => $user->affiliateComissions()->where('status','approved')->where('currency','pkr')->sum('commission_amount'),
+            'usd_approved_commission' => $user->affiliateComissions()->where('status','approved')->where('currency','usd')->sum('commission_amount'),
+            'pkr_paid_commission' => $user->affiliateComissions()->where('status','paid')->where('currency','pkr')->sum('commission_amount'),
+            'usd_paid_commission' => $user->affiliateComissions()->where('status','paid')->where('currency','usd')->sum('commission_amount'),
         ];
                return view('admin.affiliate.affiliate-user',compact('commission','stats','user'));
            }catch(\Exception $e){
@@ -68,7 +72,14 @@ class AffiliateController extends Controller
 
             // add commission into wallet
             $user = $commission->affiliate;
-            $user->wallet_balance += $commission->commission_amount;
+            if(strtolower($commission->currency) == 'pkr'){
+                // credit to usd wallet
+                $user->wallet_balance = $user->wallet_balance + $commission->commission_amount;
+            }
+            else{
+                $user->wallet_balance_usd = $user->wallet_balance_usd + $commission->commission_amount;
+            }
+            // $user->wallet_balance += $commission->commission_amount;
             $user->save();
 
             $commission->status = 'paid';
@@ -84,7 +95,26 @@ class AffiliateController extends Controller
         try{
           $users =  User::whereNotNull('referral_code')
             ->whereHas('affiliateComissions')
-            ->withSum('affiliateComissions as total_earned','commission_amount')
+            ->select('users.*')
+            ->selectSub(function ($query) {
+                $query->from('affiliate_commissions')
+                      ->selectRaw('COALESCE(SUM(commission_amount),0)')
+                      ->whereColumn('affiliate_commissions.affiliate_user_id', 'users.id')
+                      ->where(function($q){
+                          $q->where('currency','pkr')
+                          ->orwhereNull('currency');
+                      });
+            }, 'total_earned_pkr')
+
+            ->selectSub(function ($query) {
+                $query->from('affiliate_commissions')
+                      ->selectRaw('COALESCE(SUM(commission_amount),0)')
+                      ->whereColumn('affiliate_commissions.affiliate_user_id', 'users.id')
+                      ->where(function($q){
+                          $q->where('currency','usd')
+                          ->orwhereNull('currency');
+                      });
+            }, 'total_earned_usd')
             ->latest()->paginate(15);
        
                return view('admin.affiliate.user',compact('users'));

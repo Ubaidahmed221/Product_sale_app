@@ -59,7 +59,7 @@
         </a>
         <ul class="nav flex-column ms-3 submenu d-none" >
             <li class="nav-items" >
-                 <a href="#" class="nav-link" ><span class="fa fa-user mr-3"></span> Affiliate Users </a>
+                 <a href="{{ route('admin.affiliate.users') }}" class="nav-link" ><span class="fa fa-user mr-3"></span> Affiliate Users </a>
             </li> 
              <li class="nav-items" >
                  <a href="{{route('admin.affiliate.commission')}}" class="nav-link" ><span class="fa fa-percent mr-3"></span> Commissions </a>

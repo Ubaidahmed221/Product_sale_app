@@ -35,10 +35,12 @@
                                     {{ $user->orders->count() }}
                                 </td>
                                 <td>
-                                    Rs {{ number_format($user->total_earned ?? 0,2) }}
+                                    ₨ {{ number_format($user->total_earned_pkr ?? 0,2) }} <b>|</b> $
+                                    {{ number_format($user->total_earned_usd ?? 0,2) }}
                                 </td>
                                 <td>
-                                    Rs {{ number_format($user->wallet_balance ?? 0,2) }}
+                                    ₨ {{ number_format($user->wallet_balance ?? 0,2) }} <b>|</b>
+                                    $ {{ number_format($user->wallet_balance_usd ?? 0,2) }}
                                 </td>
                             </tr>
                     @endforeach
