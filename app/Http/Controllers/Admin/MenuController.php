@@ -12,7 +12,7 @@ class MenuController extends Controller
     public function index(){
         try{
           $parentMenu =  Menu::whereNull('parent_id')->get();
-          $menus = Menu::paginate(5);
+          $menus = Menu::paginate(15);
             return view('admin.menus',compact('parentMenu','menus'));
         }
         catch(\Exception $e){

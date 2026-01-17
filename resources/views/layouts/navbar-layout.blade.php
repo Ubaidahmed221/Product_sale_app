@@ -48,7 +48,7 @@
                             <a href="{{ $main->full_url }}" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ $main->name }}</a>
                             <div class="dropdown-menu rounded-0 m-0">
                                 @foreach ($main->children as $child)
-                                <a href="{{ $child->full_name }}" class="dropdown-item">{{ $child->name }}</a>
+                                <a href="{{ $child->full_url }}" class="dropdown-item">{{ $child->name }}</a>
 
                                 @endforeach
                             </div>
@@ -84,7 +84,7 @@
                      </div>
                     <div class="navbar-nav ml-auto py-0">
                         @if (auth()->check())
-
+                        <a href="#" class="nav-item nav-link font-weight-bold ">{{ auth()->user()->email }}</a>
                         <a href="#" class="nav-item nav-link logout-btn ">Logout</a>
                         @else
 

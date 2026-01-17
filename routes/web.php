@@ -138,8 +138,8 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
 
     Route::post('/save-fcm_token',[NotificationController::class,'saveFcmToken'] )->name('save.token');
 
-    // affiliate route
-    Route::get('/affliate',[AffiliateController::class,'index'] )->name('user.affiliate');
+    // affiliate user
+    Route::get('/affliate/dashboard',[AffiliateController::class,'index'] )->name('affiliate.dashboard');
 });
 
 Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){

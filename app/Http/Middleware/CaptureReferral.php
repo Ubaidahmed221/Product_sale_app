@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\AffiliateClick;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
@@ -20,6 +21,12 @@ class CaptureReferral
                 $ref = $request->query('ref');
 
                 if(User::where('referral_code', $ref)->exists()){
+                    AffiliateClick::create([
+                        'referral_code' => $ref,
+                        'ip_address' => request()->ip(),
+                        'user_agent' => request()->userAgent(),
+                    ]);
+
                     session(['referral_code' => $ref]);
 
                 }

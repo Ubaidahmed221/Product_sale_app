@@ -106,5 +106,9 @@ class User extends Authenticatable
 
         return $this->hasMany(Message::class, 'from_id');
     }
-        
+     
+       public function affiliateClicks(){
+
+        return $this->hasMany(AffiliateClick::class, 'referral_code', 'referral_code');
+    }
 }
