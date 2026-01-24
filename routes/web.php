@@ -140,6 +140,7 @@ Route::group(['middleware' => ['OnlyAuthenticated']], function(){
 
     // affiliate user
     Route::get('/affliate/dashboard',[AffiliateController::class,'index'] )->name('affiliate.dashboard');
+    Route::get('/affiliate/referral-link',[AffiliateController::class,'referralLink'] )->name('user.affiliate.referral');
 });
 
 Route::group(['middleware' => ['OnlyAuthenticated','OnlyAdmin']], function(){

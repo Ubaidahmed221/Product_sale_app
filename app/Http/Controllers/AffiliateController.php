@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class AffiliateController extends Controller
 {
     public function index(){
-    //    dd('hello affiliate');
+   
         try {
            $user = Auth::user();
         // dd($user);
@@ -57,6 +57,18 @@ class AffiliateController extends Controller
                 'totalpaidPKRCommission',
                 'totalpaidUSDCommission',
             ));
+           }   catch(\Exception $e){
+           return abort(404,'something went wrong!');
+        }
+    }
+
+      public function referralLink(){
+   
+        try {
+           $user = Auth::user();
+          $referalLink = url('/').'/?ref='.$user->referral_code;
+      
+            return view('affiliate.referral-link', compact('referalLink'));
            }   catch(\Exception $e){
            return abort(404,'something went wrong!');
         }
